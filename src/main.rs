@@ -1,6 +1,8 @@
 #[macro_use]
 extern crate glium;
 
+use std::io::Cursor;
+
 use glium::glutin;
 
 use glium::Surface;
@@ -33,7 +35,23 @@ fn main() {
     )
     .unwrap();
 
+    // load model
     let shape = glium::vertex::VertexBuffer::new(&display, &block::VERTICES).unwrap();
+
+    // load texture
+    let image = image::load(
+        Cursor::new(&include_bytes!("../textures/block.png")),
+        image::ImageFormat::Png,
+    )
+    .unwrap()
+    .to_rgba8();
+
+    let image_dimensions = image.dimensions();
+
+    let image =
+        glium::texture::RawImage2d::from_raw_rgba_reversed(&image.into_raw(), image_dimensions);
+
+    let texture = glium::texture::SrgbTexture2d::new(&display, image).unwrap();
 
     event_loop.run(move |ev, _, control_flow| {
         handle_events(ev, control_flow);
@@ -42,12 +60,14 @@ fn main() {
         frame.clear_color(0.2, 0.3, 0.3, 1.0);
         // DRAW START
 
+        let uniforms = uniform! { tex: &texture };
+
         frame
             .draw(
                 &shape,
                 glium::index::NoIndices(glium::index::PrimitiveType::TriangleStrip),
                 &block_program,
-                &glium::uniforms::EmptyUniforms,
+                &uniforms,
                 &Default::default(),
             )
             .unwrap();
