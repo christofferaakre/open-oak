@@ -22,24 +22,6 @@ use traits::Renderable;
 
 use resrouce_manager::ResourceManager;
 
-fn load_texture(display: &glium::Display) -> glium::texture::SrgbTexture2d {
-    let image_path = "../textures/block.png";
-    let image = image::load(
-        Cursor::new(&include_bytes!("../textures/block.png")),
-        image::ImageFormat::Png,
-    )
-    .unwrap()
-    .to_rgba8();
-
-    let image_dimensions = image.dimensions();
-
-    let image =
-        glium::texture::RawImage2d::from_raw_rgba_reversed(&image.into_raw(), image_dimensions);
-
-    let texture = glium::texture::SrgbTexture2d::new(display, image).unwrap();
-    return texture;
-}
-
 fn main() {
     let game = init::init();
     let display = game.display;
@@ -57,7 +39,7 @@ fn main() {
     // load block texture
     let texture_name = String::from("block");
 
-    let texture = load_texture(&display);
+    let texture = ResourceManager::load_texture(&display, "textures/block.png");
     resource_manager.add_texture(&texture_name, texture);
     block.set_texture(texture_name);
 

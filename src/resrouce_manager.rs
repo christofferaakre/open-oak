@@ -21,6 +21,25 @@ impl ResourceManager {
         }
     }
 
+    pub fn load_texture(
+        display: &glium::Display,
+        image_path: &str,
+    ) -> glium::texture::SrgbTexture2d {
+        let image = image::io::Reader::open(image_path)
+            .unwrap()
+            .decode()
+            .unwrap()
+            .to_rgba8();
+
+        let image_dimensions = image.dimensions();
+
+        let image =
+            glium::texture::RawImage2d::from_raw_rgba_reversed(&image.into_raw(), image_dimensions);
+
+        let texture = glium::texture::SrgbTexture2d::new(display, image).unwrap();
+        return texture;
+    }
+
     pub fn get_program(&self, name: &String) -> Option<&Program> {
         self.programs.get(name)
     }
