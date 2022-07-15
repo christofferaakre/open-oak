@@ -8,3 +8,12 @@ edition = "2021"
 [dependencies]
 glium = "*"
 image = "*"
+cgmath = "*"
+
+[dependencies.uuid]
+version = "*"
+features = [
+    "v4",
+    "fast-rng",
+    "macro-diagnostics"
+]

@@ -11,66 +11,40 @@ mod events;
 use events::*;
 
 mod block;
+mod init;
+mod resrouce_manager;
+mod structs;
+mod traits;
+
+use traits::Renderable;
+
+use resrouce_manager::ResourceManager;
 
 fn main() {
-    // Initialise display
-    let mut event_loop = glutin::event_loop::EventLoop::new();
-    let wb = glutin::window::WindowBuilder::new()
-        .with_title("glutin")
-        .with_inner_size(glutin::dpi::LogicalSize::new(800.0f32, 600.0f32));
-    let cb = glutin::ContextBuilder::new();
+    let game = init::init();
 
-    let display = glium::Display::new(wb, cb, &event_loop).unwrap();
+    let display = game.display;
+    let event_loop = game.event_loop;
+    let mut resource_manager = game.resource_manager;
 
-    // compile shader program
-    let block_vertex_src = std::fs::read_to_string("shaders/block.vs").unwrap();
-
-    let block_fragment_src = std::fs::read_to_string("shaders/block.fs").unwrap();
-
-    let block_program = glium::Program::from_source(
+    block::Block::init(&display, &mut resource_manager);
+    let mut block = block::Block::new(
         &display,
-        block_vertex_src.as_str(),
-        block_fragment_src.as_str(),
-        None,
-    )
-    .unwrap();
-
-    // load model
-    let shape = glium::vertex::VertexBuffer::new(&display, &block::VERTICES).unwrap();
-
-    // load texture
-    let image = image::load(
-        Cursor::new(&include_bytes!("../textures/block.png")),
-        image::ImageFormat::Png,
-    )
-    .unwrap()
-    .to_rgba8();
-
-    let image_dimensions = image.dimensions();
-
-    let image =
-        glium::texture::RawImage2d::from_raw_rgba_reversed(&image.into_raw(), image_dimensions);
-
-    let texture = glium::texture::SrgbTexture2d::new(&display, image).unwrap();
+        &mut resource_manager,
+        cgmath::Vector2::new(0.0, 0.0),
+        1.0 / 8.0,
+    );
 
     event_loop.run(move |ev, _, control_flow| {
         handle_events(ev, control_flow);
 
         let mut frame = display.draw();
         frame.clear_color(0.2, 0.3, 0.3, 1.0);
+
+        block.position.x += 0.0001;
         // DRAW START
 
-        let uniforms = uniform! { tex: &texture };
-
-        frame
-            .draw(
-                &shape,
-                glium::index::NoIndices(glium::index::PrimitiveType::TriangleStrip),
-                &block_program,
-                &uniforms,
-                &Default::default(),
-            )
-            .unwrap();
+        block.draw(&mut frame, &resource_manager);
 
         frame.finish().unwrap();
         // DRAW END
