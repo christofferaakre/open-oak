@@ -3,6 +3,7 @@ use uuid::Uuid;
 
 use std::io::Cursor;
 
+#[derive(Clone, Debug)]
 pub struct Block {
     pub position: Vector2<f32>,
     pub size: Vector2<f32>,
