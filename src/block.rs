@@ -5,7 +5,7 @@ use std::io::Cursor;
 
 pub struct Block {
     pub position: Vector2<f32>,
-    pub size: f32,
+    pub size: Vector2<f32>,
     pub id: uuid::Uuid,
 }
 
@@ -39,7 +39,11 @@ impl Block {
         let id = Uuid::new_v4();
         resource_manager.add_texture(id, texture);
 
-        Block { position, size, id }
+        Block {
+            position,
+            size: Vector2::new(size, size),
+            id,
+        }
     }
 }
 
@@ -52,7 +56,7 @@ impl Renderable for Block {
         self.id
     }
 
-    fn size(&self) -> f32 {
+    fn size(&self) -> Vector2<f32> {
         self.size
     }
 

@@ -23,17 +23,17 @@ pub trait Renderable {
     }
 
     fn id(&self) -> Uuid;
-    fn size(&self) -> f32;
+    fn size(&self) -> Vector2<f32>;
     fn position(&self) -> Vector2<f32>;
     fn draw(
         &self,
         frame: &mut glium::Frame,
         resource_manager: &ResourceManager,
     ) -> Result<(), glium::DrawError> {
-        let scale = cgmath::Matrix4::from_scale(self.size() * 2.0);
+        let scale = cgmath::Matrix4::from_scale(self.size().x * 2.0);
         let translation = cgmath::Matrix4::from_translation(cgmath::vec3(
-            2.0 * (self.size() / 2.0 - 0.5 + self.position().x),
-            2.0 * (0.5 - self.size() / 2.0 - self.position().y),
+            2.0 * (self.size().x / 2.0 - 0.5 + self.position().x),
+            2.0 * (0.5 - self.size().y / 2.0 - self.position().y),
             0.0,
         ));
 
