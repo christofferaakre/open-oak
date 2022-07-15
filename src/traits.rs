@@ -8,11 +8,14 @@ use uuid::Uuid;
 
 use cgmath::Vector2;
 
+use glium::texture::SrgbTexture2d;
+
 pub trait Renderable {
     fn get_vertex_buffer(display: &glium::Display) -> VertexBuffer<Vertex>;
     fn get_program(display: &glium::Display) -> glium::Program;
 
     fn get_name() -> String;
+
     fn init(display: &glium::Display, resource_manager: &mut ResourceManager) {
         let name = Self::get_name();
         let program = Self::get_program(display);
@@ -23,6 +26,8 @@ pub trait Renderable {
     }
 
     fn id(&self) -> Uuid;
+    fn texture_name(&self) -> String;
+    fn set_texture(&mut self, name: String);
     fn size(&self) -> Vector2<f32>;
     fn position(&self) -> Vector2<f32>;
     fn draw(
@@ -40,7 +45,7 @@ pub trait Renderable {
         let model = translation * scale;
         let model: [[f32; 4]; 4] = model.into();
 
-        let texture = resource_manager.get_texture(self.id()).unwrap();
+        let texture = resource_manager.get_texture(&self.texture_name()).unwrap();
         let uniforms = uniform! { tex: texture,
         model: model};
 

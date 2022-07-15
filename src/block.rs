@@ -7,14 +7,16 @@ pub struct Block {
     pub position: Vector2<f32>,
     pub size: Vector2<f32>,
     pub id: uuid::Uuid,
+    pub texture_name: String,
 }
 
 use glium::vertex::VertexBuffer;
-use glium::Surface;
 
 use crate::resrouce_manager::ResourceManager;
 use crate::structs::Vertex;
 use crate::traits::Renderable;
+
+use glium::texture::SrgbTexture2d;
 
 impl Block {
     pub fn new(
@@ -23,27 +25,14 @@ impl Block {
         position: Vector2<f32>,
         size: f32,
     ) -> Self {
-        let image = image::load(
-            Cursor::new(&include_bytes!("../textures/block.png")),
-            image::ImageFormat::Png,
-        )
-        .unwrap()
-        .to_rgba8();
-
-        let image_dimensions = image.dimensions();
-
-        let image =
-            glium::texture::RawImage2d::from_raw_rgba_reversed(&image.into_raw(), image_dimensions);
-
-        let texture = glium::texture::SrgbTexture2d::new(display, image).unwrap();
-        let id = Uuid::new_v4();
-        resource_manager.add_texture(id, texture);
-
-        Block {
+        let block = Block {
             position,
             size: Vector2::new(size, size),
-            id,
-        }
+            id: Uuid::new_v4(),
+            texture_name: Default::default(),
+        };
+
+        return block;
     }
 }
 
@@ -54,6 +43,10 @@ impl Renderable for Block {
 
     fn id(&self) -> Uuid {
         self.id
+    }
+
+    fn texture_name(&self) -> String {
+        self.texture_name.clone()
     }
 
     fn size(&self) -> Vector2<f32> {
@@ -78,6 +71,10 @@ impl Renderable for Block {
                 .unwrap();
 
         return program;
+    }
+
+    fn set_texture(&mut self, texture_name: String) {
+        self.texture_name = texture_name;
     }
 }
 

@@ -8,7 +8,7 @@ use crate::structs::Vertex;
 
 pub struct ResourceManager {
     pub programs: HashMap<String, Program>,
-    pub textures: HashMap<uuid::Uuid, SrgbTexture2d>,
+    pub textures: HashMap<String, SrgbTexture2d>,
     pub vertex_buffers: HashMap<String, VertexBuffer<Vertex>>,
 }
 
@@ -25,8 +25,8 @@ impl ResourceManager {
         self.programs.get(name)
     }
 
-    pub fn get_texture(&self, id: Uuid) -> Option<&SrgbTexture2d> {
-        self.textures.get(&id)
+    pub fn get_texture(&self, name: &String) -> Option<&SrgbTexture2d> {
+        self.textures.get(name)
     }
 
     pub fn get_vertex_buffer(&self, name: &String) -> Option<&VertexBuffer<Vertex>> {
@@ -37,8 +37,8 @@ impl ResourceManager {
         self.programs.insert(name.to_string(), program);
     }
 
-    pub fn add_texture(&mut self, id: Uuid, texture: SrgbTexture2d) {
-        self.textures.insert(id, texture);
+    pub fn add_texture(&mut self, name: &String, texture: SrgbTexture2d) {
+        self.textures.insert(name.to_string(), texture);
     }
 
     pub fn add_vertex_buffer(&mut self, name: &String, vertex_buffer: VertexBuffer<Vertex>) {

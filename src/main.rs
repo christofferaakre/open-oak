@@ -7,6 +7,8 @@ use glium::glutin;
 
 use glium::Surface;
 
+use uuid::Uuid;
+
 mod events;
 use events::*;
 
@@ -34,6 +36,25 @@ fn main() {
         1.0 / 8.0,
     );
 
+    // load block texture
+    let image = image::load(
+        Cursor::new(&include_bytes!("../textures/block.png")),
+        image::ImageFormat::Png,
+    )
+    .unwrap()
+    .to_rgba8();
+
+    let image_dimensions = image.dimensions();
+
+    let image =
+        glium::texture::RawImage2d::from_raw_rgba_reversed(&image.into_raw(), image_dimensions);
+
+    let texture = glium::texture::SrgbTexture2d::new(&display, image).unwrap();
+    let texture_name = String::from("block");
+
+    resource_manager.add_texture(&texture_name, texture);
+    block.set_texture(texture_name);
+
     // game loop
     event_loop.run(move |ev, _, control_flow| {
         handle_events(ev, control_flow);
@@ -42,7 +63,7 @@ fn main() {
         frame.clear_color(0.2, 0.3, 0.3, 1.0);
 
         // DRAW START
-        block.draw(&mut frame, &resource_manager);
+        block.draw(&mut frame, &resource_manager).unwrap();
 
         frame.finish().unwrap();
         // DRAW END
