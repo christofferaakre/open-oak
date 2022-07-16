@@ -25,12 +25,12 @@ impl Block {
         display: &glium::Display,
         resource_manager: &mut ResourceManager,
         position: Vector2<f32>,
-        size: f32,
+        size: Vector2<f32>,
         color: image::Rgba<f32>,
     ) -> Self {
         let block = Block {
             position,
-            size: Vector2::new(size, size),
+            size,
             id: Uuid::new_v4(),
             texture_name: Default::default(),
             color,
