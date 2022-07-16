@@ -53,8 +53,6 @@ fn main() {
     for x in 0..8 {
         for y in 0..4 {
             let mut block = Block::new(
-                &display,
-                &mut resource_manager,
                 cgmath::Vector2::new(x as f32 / 8.0, y as f32 / 12.0),
                 cgmath::Vector2::new(1.0 / 8.0, 1.0 / 12.0),
                 image::Rgba::from([1.0, 1.0, 1.0, 0.0]),

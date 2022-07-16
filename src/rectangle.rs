@@ -4,7 +4,7 @@ use uuid::Uuid;
 use std::io::Cursor;
 
 #[derive(Clone, Debug)]
-pub struct Block {
+pub struct Rectangle {
     pub position: Vector2<f32>,
     pub size: Vector2<f32>,
     pub id: uuid::Uuid,
@@ -20,9 +20,9 @@ use crate::traits::Renderable;
 
 use glium::texture::SrgbTexture2d;
 
-impl Block {
+impl Rectangle {
     pub fn new(position: Vector2<f32>, size: Vector2<f32>, color: image::Rgba<f32>) -> Self {
-        let block = Block {
+        let block = Rectangle {
             position,
             size,
             id: Uuid::new_v4(),
@@ -34,7 +34,7 @@ impl Block {
     }
 }
 
-impl Renderable for Block {
+impl Renderable for Rectangle {
     fn get_name() -> String {
         String::from("block")
     }

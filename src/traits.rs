@@ -55,7 +55,9 @@ pub trait Renderable {
         model: model, color: color};
 
         let name = Self::get_name();
-        let shape = resource_manager.get_vertex_buffer(&name).unwrap();
+        let shape = resource_manager
+            .get_vertex_buffer(&name)
+            .expect("Could not retrieve vertex buffer");
         let program = resource_manager.get_program(&name).unwrap();
 
         let params = glium::DrawParameters {
