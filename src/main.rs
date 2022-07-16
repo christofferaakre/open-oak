@@ -55,6 +55,7 @@ fn main() {
             &mut resource_manager,
             cgmath::Vector2::new(i as f32 / 8.0, 0.0),
             1.0 / 8.0,
+            image::Rgba::from([0.0, 0.0, 1.0, 0.0]),
         );
         block.set_texture(texture_name.clone());
         blocks.push(block);

@@ -9,6 +9,7 @@ pub struct Block {
     pub size: Vector2<f32>,
     pub id: uuid::Uuid,
     pub texture_name: String,
+    pub color: image::Rgba<f32>,
 }
 
 use glium::vertex::VertexBuffer;
@@ -25,12 +26,14 @@ impl Block {
         resource_manager: &mut ResourceManager,
         position: Vector2<f32>,
         size: f32,
+        color: image::Rgba<f32>,
     ) -> Self {
         let block = Block {
             position,
             size: Vector2::new(size, size),
             id: Uuid::new_v4(),
             texture_name: Default::default(),
+            color,
         };
 
         return block;
@@ -56,6 +59,10 @@ impl Renderable for Block {
 
     fn position(&self) -> cgmath::Vector2<f32> {
         self.position
+    }
+
+    fn color(&self) -> image::Rgba<f32> {
+        self.color
     }
 
     fn get_vertex_buffer(display: &glium::Display) -> VertexBuffer<Vertex> {
