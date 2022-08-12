@@ -10,4 +10,4 @@ pub mod resrouce_manager;
 pub mod structs;
 pub mod traits;
 
-// use resrouce_manager::ResourceManager;
+use resrouce_manager::ResourceManager;
