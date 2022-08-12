@@ -1,5 +1,5 @@
+use crate::resource_manager::ResourceManager;
 use crate::structs::Vertex;
-use crate::ResourceManager;
 use glium::vertex::VertexBuffer;
 
 use glium::Surface;
@@ -7,8 +7,6 @@ use glium::Surface;
 use uuid::Uuid;
 
 use cgmath::Vector2;
-
-use glium::texture::SrgbTexture2d;
 
 pub trait Renderable {
     fn get_vertex_buffer(display: &glium::Display) -> VertexBuffer<Vertex>;

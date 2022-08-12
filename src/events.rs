@@ -12,7 +12,7 @@ fn handle_keyboard_input(input: event::KeyboardInput) {
     }
 }
 
-pub fn handle_events<T>(ev: event::Event<T>, control_flow: &mut event_loop::ControlFlow) {
+pub fn handle_events<T>(ev: event::Event<T>, _control_flow: &mut event_loop::ControlFlow) {
     match ev {
         event::Event::WindowEvent { event, .. } => match event {
             event::WindowEvent::CloseRequested => {

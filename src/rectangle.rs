@@ -14,7 +14,7 @@ pub struct Rectangle {
 
 use glium::vertex::VertexBuffer;
 
-use crate::resrouce_manager::ResourceManager;
+use crate::resource_manager::ResourceManager;
 use crate::structs::Vertex;
 use crate::traits::Renderable;
 

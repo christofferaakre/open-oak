@@ -1,15 +1,15 @@
 use cgmath::Vector2;
 use uuid::Uuid;
 
-use std::io::Cursor;
+
 
 use glium::vertex::VertexBuffer;
 
-use crate::resrouce_manager::ResourceManager;
+
 use crate::structs::Vertex;
 use crate::traits::Renderable;
 
-use glium::texture::SrgbTexture2d;
+
 
 #[derive(Clone, Debug)]
 pub struct Player {

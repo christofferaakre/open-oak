@@ -1,6 +1,6 @@
 use glium::glutin;
 
-use crate::resrouce_manager::ResourceManager;
+use crate::resource_manager::ResourceManager;
 
 pub struct Game<'a> {
     pub event_loop: glutin::event_loop::EventLoop<()>,
@@ -12,7 +12,7 @@ pub struct Game<'a> {
 
 pub fn init<'a>() -> Game<'a> {
     // Initialise display
-    let mut event_loop = glutin::event_loop::EventLoop::new();
+    let event_loop = glutin::event_loop::EventLoop::new();
     let wb = glutin::window::WindowBuilder::new()
         .with_title("glutin")
         .with_inner_size(glutin::dpi::PhysicalSize::new(800.0f32, 600.0f32));
@@ -20,7 +20,7 @@ pub fn init<'a>() -> Game<'a> {
 
     let display = glium::Display::new(wb.clone(), cb.clone(), &event_loop).unwrap();
 
-    let mut resource_manager = ResourceManager::new();
+    let resource_manager = ResourceManager::new();
 
     Game {
         event_loop,

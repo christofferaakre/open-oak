@@ -2,7 +2,7 @@ use glium::texture::SrgbTexture2d;
 use glium::vertex::VertexBuffer;
 use glium::Program;
 use std::collections::HashMap;
-use uuid::Uuid;
+
 
 use crate::structs::Vertex;
 
