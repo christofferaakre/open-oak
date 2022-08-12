@@ -1,7 +1,13 @@
 use cgmath::Vector2;
+use std::io::Cursor;
 use uuid::Uuid;
 
-use std::io::Cursor;
+use glium::texture::SrgbTexture2d;
+use glium::vertex::VertexBuffer;
+
+use crate::resource_manager::ResourceManager;
+use crate::structs::Vertex;
+use crate::traits::Renderable;
 
 #[derive(Clone, Debug)]
 pub struct Rectangle {
@@ -11,14 +17,6 @@ pub struct Rectangle {
     pub texture_name: String,
     pub color: image::Rgba<f32>,
 }
-
-use glium::vertex::VertexBuffer;
-
-use crate::resource_manager::ResourceManager;
-use crate::structs::Vertex;
-use crate::traits::Renderable;
-
-use glium::texture::SrgbTexture2d;
 
 impl Rectangle {
     pub fn new(position: Vector2<f32>, size: Vector2<f32>, color: image::Rgba<f32>) -> Self {
