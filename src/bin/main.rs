@@ -1,35 +1,17 @@
-#[macro_use]
-extern crate glium;
-
-use std::io::Cursor;
-
-use glium::glutin;
-
+use ge::block::Block;
+use ge::events::handle_events;
+use ge::init::{init, Game};
+use ge::player::Player;
+use ge::resrouce_manager::ResourceManager;
+use ge::traits::Renderable;
 use glium::Surface;
-
-use uuid::Uuid;
-
-mod events;
-use events::*;
-
-mod block;
-mod init;
-mod player;
-mod resrouce_manager;
-mod structs;
-mod traits;
-
-use block::Block;
-use traits::Renderable;
-
-use resrouce_manager::ResourceManager;
 
 fn main() {
     // init game and destructure
-    let game = init::init();
+    let game = init();
 
     // destructure fields off Game
-    let init::Game {
+    let Game {
         display,
         event_loop,
         mut resource_manager,
@@ -41,7 +23,7 @@ fn main() {
 
     // load block texture
     let texture_name = String::from("block");
-    let texture = ResourceManager::load_texture(&display, "textures/block.png");
+    let texture = ResourceManager::load_texture(&display, "textures/awesomeface.png");
     resource_manager.add_texture(&texture_name, texture);
 
     // define block
@@ -55,7 +37,7 @@ fn main() {
             let mut block = Block::new(
                 cgmath::Vector2::new(x as f32 / 8.0, y as f32 / 12.0),
                 cgmath::Vector2::new(1.0 / 8.0, 1.0 / 12.0),
-                image::Rgba::from([1.0, 1.0, 1.0, 0.0]),
+                image::Rgba::from([1.0, 0.0, 0.0, 1.0]),
             );
             block.set_texture(texture_name.clone());
             blocks.push(block);
@@ -63,8 +45,8 @@ fn main() {
     }
 
     // define player
-    player::Player::init(&display, &mut resource_manager);
-    let mut player = player::Player::new(
+    Player::init(&display, &mut resource_manager);
+    let mut player = Player::new(
         cgmath::Vector2::new(400.0 / 800.0, 500.0 / 600.0),
         cgmath::Vector2::new(100.0 / 800.0, 40.0 / 800.0),
         image::Rgba::from([1.0, 1.0, 1.0, 1.0]),
