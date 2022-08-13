@@ -9,7 +9,7 @@ use crate::traits::{Name, Renderable, Shaders, Texture, Vertices};
 
 use glium::Surface;
 
-use crate::{impl_name, impl_shaders, impl_vertices};
+use crate::impl_texture;
 
 #[derive(Clone, Debug)]
 pub struct Rectangle {
@@ -20,32 +20,12 @@ pub struct Rectangle {
     pub color: image::Rgba<f32>,
 }
 
-// impl Vertices for Rectangle {
-//     fn get_vertex_buffer(display: &glium::Display) -> VertexBuffer<Vertex> {
-//         VertexBuffer::new(display, &VERTICES).unwrap()
-//     }
-// }
-
-impl_name!(Rectangle, "rectangle");
-impl_vertices!(Rectangle);
-impl_shaders!(
+impl_texture!(
     Rectangle,
+    "rectangle",
     "../shaders/rectangle.vs",
     "../shaders/rectangle.fs"
 );
-
-impl Texture for Rectangle {
-    fn init(resource_manager: &mut ResourceManager, display: &glium::Display) {
-        let vertex_buffer = Rectangle::get_vertex_buffer(&display);
-        resource_manager.add_vertex_buffer(&Rectangle::get_name(), vertex_buffer);
-
-        resource_manager.add_program(&Rectangle::get_name(), Rectangle::get_program(&display));
-    }
-
-    fn set_texture(&mut self, texture_name: String) {
-        self.texture_name = texture_name;
-    }
-}
 
 impl Rectangle {
     pub fn new(position: Vector2<f32>, size: Vector2<f32>, color: image::Rgba<f32>) -> Self {
