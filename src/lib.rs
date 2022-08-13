@@ -5,6 +5,7 @@ pub mod events;
 
 // pub mod block;
 pub mod init;
+pub mod macros;
 pub mod rectangle;
 pub mod resource_manager;
 pub mod structs;
