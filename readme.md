@@ -1,5 +1,5 @@
-# ge
-`ge` is a 2D game engine based on OpenGL written in Rust. It uses
+# open-oak
+`open-oak` is a 2D game engine based on OpenGL written in Rust. It uses
 [glium](https://docs.rs/glium/latest/glium/#macros) for openGL bindings.
 This project is in very early stages.
 
@@ -13,11 +13,11 @@ Below is a simple example that renders a textured block to the screen.
 
  use glium::Surface;
 
- use ge::events::handle_events;
- use ge::init::{init, Game};
- use ge::rectangle::Rectangle;
- use ge::resource_manager::ResourceManager;
- use ge::traits::{Renderable, Shaders, Texture};
+ use open_oak::events::handle_events;
+ use open_oak::init::{init, Game};
+ use open_oak::rectangle::Rectangle;
+ use open_oak::resource_manager::ResourceManager;
+ use open_oak::traits::{Renderable, Shaders, Texture};
 
  use cgmath::Vector2;
 
@@ -26,7 +26,7 @@ Below is a simple example that renders a textured block to the screen.
  }
 
  impl Block {
-     fn new(position: Vector2<f32>, size: Vector2<f32>, color: image::Rgba<f32>) -> Block {
+     fn new(position: Vector2<f32>, size: Vector2<f32>, color: imaopen_oak::Rgba<f32>) -> Block {
          let rect = Rectangle::new(position, size, color);
          Block { rect }
      }
@@ -48,7 +48,7 @@ Below is a simple example that renders a textured block to the screen.
      let mut block = Block::new(
          Vector2::new(0.5, 0.5),
          Vector2::new(0.3, 0.3),
-         image::Rgba::from([1.0, 0.0, 0.0, 1.0]),
+         imaopen_oak::Rgba::from([1.0, 0.0, 0.0, 1.0]),
      );
 
      // init rectangle

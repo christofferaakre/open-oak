@@ -9,11 +9,11 @@
 //!
 //! use glium::Surface;
 //!
-//! use ge::events::handle_events;
-//! use ge::init::{init, Game};
-//! use ge::rectangle::Rectangle;
-//! use ge::resource_manager::ResourceManager;
-//! use ge::traits::{Renderable, Shaders, Texture};
+//! use open_oak::events::handle_events;
+//! use open_oak::init::{init, Game};
+//! use open_oak::rectangle::Rectangle;
+//! use open_oak::resource_manager::ResourceManager;
+//! use open_oak::traits::{Renderable, Shaders, Texture};
 //!
 //! use cgmath::Vector2;
 //!
@@ -22,7 +22,7 @@
 //! }
 //!
 //! impl Block {
-//!     fn new(position: Vector2<f32>, size: Vector2<f32>, color: image::Rgba<f32>) -> Block {
+//!     fn new(position: Vector2<f32>, size: Vector2<f32>, color: imaopen_oak::Rgba<f32>) -> Block {
 //!         let rect = Rectangle::new(position, size, color);
 //!         Block { rect }
 //!     }
