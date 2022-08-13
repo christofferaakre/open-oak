@@ -32,3 +32,42 @@ pub trait Name {
 pub trait Vertices: Name {
     fn get_vertex_buffer(display: &glium::Display) -> VertexBuffer<Vertex>;
 }
+
+#[macro_export]
+macro_rules! impl_name {
+    ($struct:ident, $name:literal) => {
+        impl Name for $struct {
+            fn get_name() -> String {
+                String::from($name)
+            }
+        }
+    };
+}
+
+#[macro_export]
+macro_rules! impl_vertices {
+    ($struct:ident) => {
+        impl Vertices for $struct {
+            fn get_vertex_buffer(display: &glium::Display) -> VertexBuffer<Vertex> {
+                VertexBuffer::new(display, &VERTICES).unwrap()
+            }
+        }
+    };
+}
+
+#[macro_export]
+macro_rules! impl_shaders {
+    ($struct:ident, $vertex_source:literal, $fragment_source:literal) => {
+        impl Shaders for $struct {
+            fn get_program(display: &glium::Display) -> glium::Program {
+                let vertex_src = include_str!($vertex_source);
+                let fragment_src = include_str!($fragment_source);
+
+                let program = glium::Program::from_source(display, vertex_src, fragment_src, None)
+                    .expect("Could not compile shader program");
+
+                return program;
+            }
+        }
+    };
+}

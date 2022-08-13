@@ -1,8 +1,6 @@
 use cgmath::Vector2;
-use std::io::Cursor;
 use uuid::Uuid;
 
-use glium::texture::SrgbTexture2d;
 use glium::vertex::VertexBuffer;
 
 use crate::resource_manager::ResourceManager;
@@ -10,6 +8,8 @@ use crate::structs::Vertex;
 use crate::traits::{Name, Renderable, Shaders, Texture, Vertices};
 
 use glium::Surface;
+
+use crate::{impl_name, impl_shaders, impl_vertices};
 
 #[derive(Clone, Debug)]
 pub struct Rectangle {
@@ -20,17 +20,19 @@ pub struct Rectangle {
     pub color: image::Rgba<f32>,
 }
 
-impl Vertices for Rectangle {
-    fn get_vertex_buffer(display: &glium::Display) -> VertexBuffer<Vertex> {
-        VertexBuffer::new(display, &VERTICES).unwrap()
-    }
-}
+// impl Vertices for Rectangle {
+//     fn get_vertex_buffer(display: &glium::Display) -> VertexBuffer<Vertex> {
+//         VertexBuffer::new(display, &VERTICES).unwrap()
+//     }
+// }
 
-impl Name for Rectangle {
-    fn get_name() -> String {
-        String::from("rectangle")
-    }
-}
+impl_name!(Rectangle, "rectangle");
+impl_vertices!(Rectangle);
+impl_shaders!(
+    Rectangle,
+    "../shaders/rectangle.vs",
+    "../shaders/rectangle.fs"
+);
 
 impl Texture for Rectangle {
     fn init(resource_manager: &mut ResourceManager, display: &glium::Display) {
@@ -42,19 +44,6 @@ impl Texture for Rectangle {
 
     fn set_texture(&mut self, texture_name: String) {
         self.texture_name = texture_name;
-    }
-}
-
-impl Shaders for Rectangle {
-    fn get_program(display: &glium::Display) -> glium::Program {
-        let vertex_src = std::fs::read_to_string("shaders/block.vs").unwrap();
-        let fragment_src = std::fs::read_to_string("shaders/block.fs").unwrap();
-
-        let program =
-            glium::Program::from_source(display, vertex_src.as_str(), fragment_src.as_str(), None)
-                .unwrap();
-
-        return program;
     }
 }
 
