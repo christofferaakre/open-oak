@@ -3,6 +3,10 @@
 [glium](https://docs.rs/glium/latest/glium/#macros) for openGL bindings.
 This project is in very early stages.
 
+# Features
+* Rendering textured objects on the screen
+* Handling window, mouse, and keyboard events
+
 ## Example
 Below is a simple example that renders a textured block to the screen.
  ```rust
