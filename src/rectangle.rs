@@ -7,7 +7,9 @@ use glium::vertex::VertexBuffer;
 
 use crate::resource_manager::ResourceManager;
 use crate::structs::Vertex;
-use crate::traits::Renderable;
+use crate::traits::{Name, Renderable, Shaders, Texture, Vertices};
+
+use glium::Surface;
 
 #[derive(Clone, Debug)]
 pub struct Rectangle {
@@ -16,6 +18,44 @@ pub struct Rectangle {
     pub id: uuid::Uuid,
     pub texture_name: String,
     pub color: image::Rgba<f32>,
+}
+
+impl Vertices for Rectangle {
+    fn get_vertex_buffer(display: &glium::Display) -> VertexBuffer<Vertex> {
+        VertexBuffer::new(display, &VERTICES).unwrap()
+    }
+}
+
+impl Name for Rectangle {
+    fn get_name() -> String {
+        String::from("rectangle")
+    }
+}
+
+impl Texture for Rectangle {
+    fn init(resource_manager: &mut ResourceManager, display: &glium::Display) {
+        let vertex_buffer = Rectangle::get_vertex_buffer(&display);
+        resource_manager.add_vertex_buffer(&Rectangle::get_name(), vertex_buffer);
+
+        resource_manager.add_program(&Rectangle::get_name(), Rectangle::get_program(&display));
+    }
+
+    fn set_texture(&mut self, texture_name: String) {
+        self.texture_name = texture_name;
+    }
+}
+
+impl Shaders for Rectangle {
+    fn get_program(display: &glium::Display) -> glium::Program {
+        let vertex_src = std::fs::read_to_string("shaders/block.vs").unwrap();
+        let fragment_src = std::fs::read_to_string("shaders/block.fs").unwrap();
+
+        let program =
+            glium::Program::from_source(display, vertex_src.as_str(), fragment_src.as_str(), None)
+                .unwrap();
+
+        return program;
+    }
 }
 
 impl Rectangle {
@@ -33,48 +73,52 @@ impl Rectangle {
 }
 
 impl Renderable for Rectangle {
-    fn get_name() -> String {
-        String::from("block")
-    }
+    fn draw(
+        &self,
+        frame: &mut glium::Frame,
+        resource_manager: &ResourceManager,
+    ) -> Result<(), glium::DrawError> {
+        let scale =
+            cgmath::Matrix4::from_nonuniform_scale(self.size.x * 2.0, self.size.y * 2.0, 1.0);
+        let translation = cgmath::Matrix4::from_translation(cgmath::vec3(
+            2.0 * (self.size.x / 2.0 - 0.5 + self.position.x),
+            2.0 * (0.5 - self.size.y / 2.0 - self.position.y),
+            0.0,
+        ));
 
-    fn id(&self) -> Uuid {
-        self.id
-    }
+        let model = translation * scale;
+        let model: [[f32; 4]; 4] = model.into();
 
-    fn texture_name(&self) -> String {
-        self.texture_name.clone()
-    }
+        let texture = resource_manager.get_texture(&self.texture_name).unwrap();
 
-    fn size(&self) -> Vector2<f32> {
-        self.size
-    }
+        let color = self.color.0;
 
-    fn position(&self) -> cgmath::Vector2<f32> {
-        self.position
-    }
+        let uniforms = uniform! { tex: texture,
+        model: model, color: color};
 
-    fn color(&self) -> image::Rgba<f32> {
-        self.color
-    }
+        let name = Self::get_name();
+        let shape = resource_manager
+            .get_vertex_buffer(&name)
+            .expect("Could not retrieve vertex buffer");
+        let program = resource_manager.get_program(&name).unwrap();
 
-    fn get_vertex_buffer(display: &glium::Display) -> VertexBuffer<Vertex> {
-        VertexBuffer::new(display, &VERTICES).unwrap()
-    }
+        let params = glium::DrawParameters {
+            // depth: glium::Depth {
+            // test: glium::draw_parameters::DepthTest::IfEqual,
+            // write: true,
+            // ..Default::default()
+            // },
+            blend: glium::Blend::alpha_blending(),
+            ..Default::default()
+        };
 
-    fn get_program(display: &glium::Display) -> glium::Program {
-        let vertex_src = std::fs::read_to_string("shaders/block.vs").unwrap();
-
-        let fragment_src = std::fs::read_to_string("shaders/block.fs").unwrap();
-
-        let program =
-            glium::Program::from_source(display, vertex_src.as_str(), fragment_src.as_str(), None)
-                .unwrap();
-
-        return program;
-    }
-
-    fn set_texture(&mut self, texture_name: String) {
-        self.texture_name = texture_name;
+        frame.draw(
+            shape,
+            glium::index::NoIndices(glium::index::PrimitiveType::TriangleStrip),
+            program,
+            &uniforms,
+            &params,
+        )
     }
 }
 
