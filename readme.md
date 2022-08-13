@@ -2,7 +2,8 @@
 `ge` is a 2D game engine based on OpenGL written in Rust. It uses
 [glium](https://docs.rs/glium/latest/glium/#macros) for openGL bindings.
 This project is in very early stages.
-# Example
+
+## Example
 Below is a simple example that renders a textured block to the screen.
  ```rust
 
@@ -73,3 +74,20 @@ Below is a simple example that renders a textured block to the screen.
      });
  }
  ```
+
+## Development
+I am very happy for any contributions!
+
+To contribute, fork the repository, then edit the source code.
+You can create a binary crate and put some example code in
+there, so you can verify that the game engine is still working, and that your new
+feature/bug fix/whatever is working as intended.
+In the `Cargo.toml` of your binary crate, you can link to your local version of `ge`:
+```toml
+# --snip --
+[dependencies]
+`ge = { path = "/path/to/ge" }`
+# --snip --
+```
+When you are done making changes, submit a pull request!
+
