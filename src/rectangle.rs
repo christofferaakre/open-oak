@@ -1,3 +1,5 @@
+//! Module defining a rectangle.
+
 use cgmath::Vector2;
 use uuid::Uuid;
 
@@ -11,6 +13,8 @@ use glium::Surface;
 
 use crate::impl_texture;
 
+/// Struct representing a Rectangle. Implements the `Renderable`
+/// trait, so it can be rendered to the screen
 #[derive(Clone, Debug)]
 pub struct Rectangle {
     pub position: Vector2<f32>,
@@ -28,6 +32,7 @@ impl_texture!(
 );
 
 impl Rectangle {
+    /// Returns a new Rectangle with no texture.
     pub fn new(position: Vector2<f32>, size: Vector2<f32>, color: image::Rgba<f32>) -> Self {
         let block = Rectangle {
             position,
@@ -58,7 +63,9 @@ impl Renderable for Rectangle {
         let model = translation * scale;
         let model: [[f32; 4]; 4] = model.into();
 
-        let texture = resource_manager.get_texture(&self.texture_name).unwrap();
+        let texture = resource_manager
+            .get_texture(&self.texture_name)
+            .unwrap_or_else(|| panic!("Failed to get texture with name {}", &self.texture_name));
 
         let color = self.color.0;
 
@@ -68,8 +75,10 @@ impl Renderable for Rectangle {
         let name = Self::get_name();
         let shape = resource_manager
             .get_vertex_buffer(&name)
-            .expect("Could not retrieve vertex buffer");
-        let program = resource_manager.get_program(&name).unwrap();
+            .unwrap_or_else(|| panic!("Could not retrieve vertex buffer with name {}", &name));
+        let program = resource_manager
+            .get_program(&name)
+            .unwrap_or_else(|| panic!("Failed to get shader program with name {}", &name));
 
         let params = glium::DrawParameters {
             // depth: glium::Depth {
@@ -91,7 +100,7 @@ impl Renderable for Rectangle {
     }
 }
 
-pub const VERTICES: [Vertex; 4] = [
+const VERTICES: [Vertex; 4] = [
     Vertex {
         position: [-0.5, -0.5],
         tex_coords: [0.0, 0.0],

@@ -1,7 +1,10 @@
+//! Module containing various utilities for initialising a game.
+
 use glium::glutin;
 
 use crate::resource_manager::ResourceManager;
 
+/// Struct containing other useful structs for managing a game.
 pub struct Game<'a> {
     pub event_loop: glutin::event_loop::EventLoop<()>,
     pub display: glium::Display,
@@ -10,6 +13,8 @@ pub struct Game<'a> {
     pub resource_manager: ResourceManager,
 }
 
+/// The main function provided by this module. Initialises a window
+/// and resource manager and returns a Game struct.
 pub fn init<'a>() -> Game<'a> {
     // Initialise display
     let event_loop = glutin::event_loop::EventLoop::new();
@@ -18,7 +23,8 @@ pub fn init<'a>() -> Game<'a> {
         .with_inner_size(glutin::dpi::PhysicalSize::new(800.0f32, 600.0f32));
     let cb = glutin::ContextBuilder::new();
 
-    let display = glium::Display::new(wb.clone(), cb.clone(), &event_loop).unwrap();
+    let display = glium::Display::new(wb.clone(), cb.clone(), &event_loop)
+        .expect("Failed to initialise display");
 
     let resource_manager = ResourceManager::new();
 
