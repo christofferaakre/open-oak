@@ -1,5 +1,5 @@
 //! Game engine for 2D games based on OpenGL. Uses glium as
-//! the openGL binding.
+//! the openGL binding. This project is in very early stages.
 //! # Example
 //! Below is a simple example that renders a textured block to the screen.
 //! ```rust
