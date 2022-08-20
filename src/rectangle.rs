@@ -100,7 +100,7 @@ impl Renderable for Rectangle {
     }
 }
 
-const VERTICES: [Vertex; 4] = [
+pub const VERTICES: [Vertex; 4] = [
     Vertex {
         position: [-0.5, -0.5],
         tex_coords: [0.0, 0.0],

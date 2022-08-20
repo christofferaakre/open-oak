@@ -52,11 +52,10 @@ macro_rules! impl_shaders {
             }
 
             fn init(resource_manager: &mut ResourceManager, display: &glium::Display) {
-                let vertex_buffer = Rectangle::get_vertex_buffer(&display);
-                resource_manager.add_vertex_buffer(&Rectangle::get_name(), vertex_buffer);
+                let vertex_buffer = $struct::get_vertex_buffer(&display);
+                resource_manager.add_vertex_buffer(&$struct::get_name(), vertex_buffer);
 
-                resource_manager
-                    .add_program(&Rectangle::get_name(), Rectangle::get_program(&display));
+                resource_manager.add_program(&$struct::get_name(), $struct::get_program(&display));
             }
         }
     };

@@ -80,7 +80,8 @@ extern crate glium;
 pub mod events;
 
 // pub mod block;
-// pub mod circle_vertices;
+pub mod circle;
+pub mod circle_vertices;
 pub mod init;
 pub mod macros;
 pub mod rectangle;
