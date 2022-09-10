@@ -9,6 +9,7 @@ edition = "2021"
 glium = "*"
 image = "*"
 cgmath = "*"
+doc-comment = "*"
 
 [dependencies.uuid]
 version = "*"

@@ -74,8 +74,10 @@
 //!     });
 //! }
 //! ```
+
 #[macro_use]
 extern crate glium;
+extern crate doc_comment;
 
 pub mod events;
 

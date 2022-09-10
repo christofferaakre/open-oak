@@ -4,7 +4,7 @@ use std::io::prelude::*;
 fn main() {
     let n_vertices = 100;
     let mut vertices_source = format!(
-        "use crate::structs::Vertex;\npub const VERTICES: [Vertex; {}] = [\n",
+        "use crate::structs::Vertex;\n/// Vertices for rendering a circle.\npub const VERTICES: [Vertex; {}] = [\n",
         n_vertices
     );
 

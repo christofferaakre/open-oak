@@ -1,4 +1,5 @@
 use crate::structs::Vertex;
+/// Vertices for rendering a circle.
 pub const VERTICES: [Vertex; 100] = [
     Vertex {
         position  : [0.5f32, 0f32],

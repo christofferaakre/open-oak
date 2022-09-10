@@ -11,8 +11,11 @@ use crate::structs::Vertex;
 /// The main struct provided by this module. Manages
 /// shaders (shader programs), textures, and vertex buffers.
 pub struct ResourceManager {
+    /// HashMap storing the shader programs the resource manager is managing.
     pub programs: HashMap<String, Program>,
+    /// HashMap storing the textures the resource manager is managing.
     pub textures: HashMap<String, SrgbTexture2d>,
+    /// HashMap storing the vertex buffers the resource manager is managing.
     pub vertex_buffers: HashMap<String, VertexBuffer<Vertex>>,
 }
 

@@ -100,6 +100,7 @@ impl Renderable for Rectangle {
     }
 }
 
+/// Struct representing a box collider (Axis Aligned Bounded Box)
 pub struct RectangleCollider {
     pub position: Vector2<f32>,
     pub size: Vector2<f32>,
