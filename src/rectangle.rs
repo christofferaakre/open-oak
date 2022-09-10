@@ -100,6 +100,45 @@ impl Renderable for Rectangle {
     }
 }
 
+pub struct RectangleCollider {
+    pub position: Vector2<f32>,
+    pub size: Vector2<f32>,
+}
+
+struct Edges {
+    left: f32,
+    right: f32,
+    bottom: f32,
+    top: f32,
+}
+
+impl RectangleCollider {
+    pub fn new(position: Vector2<f32>, size: Vector2<f32>) -> Self {
+        RectangleCollider { position, size }
+    }
+
+    fn edges(&self) -> Edges {
+        Edges {
+            left: self.position.x,
+            right: self.position.x + self.size.x,
+            bottom: self.position.y - self.size.y,
+            top: self.position.y,
+        }
+    }
+
+    pub fn is_colliding_with_rect(&self, other: &RectangleCollider) -> bool {
+        // check horizontal overlap
+        let edges = self.edges();
+        let other_edges = other.edges();
+        let x_overlap = (edges.left < other_edges.right && edges.right > other_edges.right)
+            || (edges.right > other_edges.left && edges.left < other_edges.left);
+        let y_overlap = (edges.bottom < other_edges.top && edges.top > other_edges.top)
+            || (edges.top > other_edges.bottom && edges.bottom < other_edges.bottom);
+
+        return x_overlap && y_overlap;
+    }
+}
+
 pub const VERTICES: [Vertex; 4] = [
     Vertex {
         position: [-0.5, -0.5],
