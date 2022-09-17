@@ -11,8 +11,8 @@ fn main() {
     for i in 0..n_vertices {
         let t = 2.0 * std::f32::consts::PI * i as f32 / n_vertices as f32;
         // let t = (i as f32) * std::f32::consts::PI / 180.0;
-        let x = 0.5 * t.cos();
-        let y = 0.5 * t.sin();
+        let x = 1.0 * t.cos();
+        let y = 1.0 * t.sin();
         vertices_source.push_str(
             format!(
                 "    Vertex {{\n        position  : [{}f32, {}f32],\n        tex_coords: [{}f32, {}f32],\n    }},\n",

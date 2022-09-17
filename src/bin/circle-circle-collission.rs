@@ -8,6 +8,7 @@ use open_oak::traits::{Renderable, Shaders, Texture};
 
 use glium::glutin::event::VirtualKeyCode;
 
+use cgmath::InnerSpace;
 use cgmath::Vector2;
 
 use std::collections::HashSet;
@@ -30,14 +31,14 @@ fn main() {
 
     let mut circle1 = Circle::new(
         Vector2::new(0.0, 0.0),
-        0.1,
+        0.5,
         image::Rgba([1.0, 0.0, 0.0, 1.0]),
     );
 
     let mut collider1 = CircleCollider::new(circle1.radius, circle1.position);
 
     let mut circle2 = Circle::new(
-        Vector2::new(0.15, 0.15),
+        Vector2::new(0.3, 0.3),
         0.1,
         image::Rgba([0.0, 0.0, 1.0, 1.0]),
     );
@@ -79,15 +80,26 @@ fn main() {
         let mut frame = display.draw();
         frame.clear_color(0.2, 0.3, 0.3, 1.0);
 
-        collider1.center = circle1.position + Vector2::new(circle1.radius, circle1.radius);
-        collider2.center = circle2.position + Vector2::new(circle2.radius, circle2.radius);
+        collider1.center = circle1.position;
+        collider2.center = circle2.position;
+
+        let distance = (collider1.center - collider2.center).magnitude();
 
         circle1.draw(&mut frame, &resource_manager).unwrap();
         circle2.draw(&mut frame, &resource_manager).unwrap();
 
+        // for circle in [&circle1, &circle2] {
+        //     let mut center = Circle::new(circle.position, 0.1, image::Rgba([0.0, 1.0, 0.0, 1.0]));
+        //     center.set_texture(texture_name.clone());
+        //     center.draw(&mut frame, &resource_manager).unwrap();
+        // }
+
         let collission = collider1.is_colliding_with_circle(&collider2);
         let collission2 = collider2.is_colliding_with_circle(&collider1);
-        println!("{} {}", collission, collission2);
+        println!(
+            "{} {}, distance: {}, radius1: {}, radius2: {}",
+            collission, collission2, distance, circle1.radius, circle2.radius
+        );
 
         frame.finish().unwrap();
     });

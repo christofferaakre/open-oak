@@ -14,6 +14,8 @@ use glium::Surface;
 use crate::impl_texture;
 
 use crate::circle_vertices::VERTICES;
+
+use cgmath::prelude::InnerSpace;
 // use crate::rectangle::VERTICES;
 
 /// Struct representing a Circle. Implements the `Renderable`
@@ -53,18 +55,23 @@ impl Renderable for Circle {
         frame: &mut glium::Frame,
         resource_manager: &ResourceManager,
     ) -> Result<(), glium::DrawError> {
-        let size = self.radius * 2.0;
+        let size = self.radius * 1.0;
         let scale =
         // cgmath::Matrix4::from_nonuniform_scale(self.radius * 4.0, self.radius * 4.0, 1.0);
         // TODO: Do the real scaling
         cgmath::Matrix4::from_nonuniform_scale(size, size, 1.0);
         // TODO: Do the real translation
         // let translation = cgmath::Matrix4::from_translation(cgmath::Vector3::new(0.0, 0.0, 0.0));
-        let translation = cgmath::Matrix4::from_translation(cgmath::vec3(
-            2.0 * (self.radius / 2.0 - 0.5 + self.position.x),
-            2.0 * (0.5 - self.radius / 2.0 - self.position.y),
+        let translation = cgmath::Matrix4::from_translation(cgmath::Vector3::new(
+            self.position.x,
+            -self.position.y,
             0.0,
         ));
+        // let translation = cgmath::Matrix4::from_translation(cgmath::vec3(
+        //     2.0 * (self.radius - 0.5 + self.position.x),
+        //     2.0 * (0.5 - self.radius - self.position.y),
+        //     0.0,
+        // ));
 
         let model = translation * scale;
         let model: [[f32; 4]; 4] = model.into();
@@ -103,5 +110,24 @@ impl Renderable for Circle {
             &uniforms,
             &params,
         )
+    }
+}
+
+/// Struct representing a cirlce collider.
+pub struct CircleCollider {
+    pub radius: f32,
+    pub center: Vector2<f32>,
+}
+
+impl CircleCollider {
+    pub fn new(radius: f32, center: Vector2<f32>) -> Self {
+        CircleCollider { radius, center }
+    }
+
+    pub fn is_colliding_with_circle(&self, other: &CircleCollider) -> bool {
+        let displacment = other.center - self.center;
+        let distance = displacment.magnitude();
+
+        return distance < self.radius + other.radius;
     }
 }
