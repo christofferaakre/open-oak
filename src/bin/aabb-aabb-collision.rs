@@ -37,9 +37,9 @@ fn main() {
     let mut collider1 = RectangleCollider::new(rect1.position, rect1.size);
 
     let mut rect2 = Rectangle::new(
-        Vector2::new(0.55, 0.55),
+        Vector2::new(0.5, 0.5),
         Vector2::new(0.1, 0.1),
-        image::Rgba([1.0, 0.0, 0.0, 1.0]),
+        image::Rgba([0.0, 0.0, 1.0, 1.0]),
     );
 
     let mut collider2 = RectangleCollider::new(rect2.position, rect2.size);
@@ -52,7 +52,7 @@ fn main() {
     let v = 0.1;
 
     let mut last_frame = Instant::now();
-    event_loop.run(move |ev, _, control_flow| {
+    event_loop.run(move |ev, _, _control_flow| {
         let dt = last_frame.elapsed();
         last_frame += dt;
 
@@ -87,7 +87,13 @@ fn main() {
 
         let collission = collider1.is_colliding_with_rect(&collider2);
         let collission2 = collider2.is_colliding_with_rect(&collider1);
-        println!("{} {}", collission, collission2);
+        println!(
+            "{} {}. Edges: {:?}, {:?}",
+            collission,
+            collission2,
+            collider1.edges(),
+            collider2.edges()
+        );
 
         frame.finish().unwrap();
     });

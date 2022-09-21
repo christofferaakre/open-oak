@@ -55,10 +55,15 @@ impl Renderable for Rectangle {
         let scale =
             cgmath::Matrix4::from_nonuniform_scale(self.size.x * 2.0, self.size.y * 2.0, 1.0);
         let translation = cgmath::Matrix4::from_translation(cgmath::vec3(
-            2.0 * (self.size.x / 2.0 - 0.5 + self.position.x),
-            2.0 * (0.5 - self.size.y / 2.0 - self.position.y),
+            -1.0 + self.position.x * 2.0,
+            1.0 - self.position.y * 2.0,
             0.0,
         ));
+        // let translation = cgmath::Matrix4::from_translation(cgmath::vec3(
+        //     2.0 * (self.size.x / 2.0 - 0.5 + self.position.x),
+        //     2.0 * (0.5 - self.size.y / 2.0 - self.position.y),
+        //     0.0,
+        // ));
 
         let model = translation * scale;
         let model: [[f32; 4]; 4] = model.into();
@@ -106,7 +111,8 @@ pub struct RectangleCollider {
     pub size: Vector2<f32>,
 }
 
-struct Edges {
+#[derive(Debug)]
+pub struct Edges {
     left: f32,
     right: f32,
     bottom: f32,
@@ -118,12 +124,14 @@ impl RectangleCollider {
         RectangleCollider { position, size }
     }
 
-    fn edges(&self) -> Edges {
+    pub fn edges(&self) -> Edges {
+        let pos = self.position;
+        let size = self.size;
         Edges {
-            left: self.position.x,
-            right: self.position.x + self.size.x,
-            bottom: self.position.y - self.size.y,
-            top: self.position.y,
+            left: pos.x - size.x / 2.0,
+            right: pos.x + size.x / 2.0,
+            bottom: pos.y + size.y / 2.0,
+            top: pos.y - size.y / 2.0,
         }
     }
 
@@ -131,10 +139,10 @@ impl RectangleCollider {
         // check horizontal overlap
         let edges = self.edges();
         let other_edges = other.edges();
-        let x_overlap = (edges.left < other_edges.right && edges.right > other_edges.right)
-            || (edges.right > other_edges.left && edges.left < other_edges.left);
-        let y_overlap = (edges.bottom < other_edges.top && edges.top > other_edges.top)
-            || (edges.top > other_edges.bottom && edges.bottom < other_edges.bottom);
+        let x_overlap = (edges.left <= other_edges.right && edges.right >= other_edges.right)
+            || (edges.right >= other_edges.left && edges.left <= other_edges.left);
+        let y_overlap = (edges.bottom >= other_edges.top && edges.top <= other_edges.top)
+            || (edges.top <= other_edges.bottom && edges.bottom >= other_edges.bottom);
 
         return x_overlap && y_overlap;
     }
