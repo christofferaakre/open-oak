@@ -63,8 +63,8 @@ impl Renderable for Circle {
         // TODO: Do the real translation
         // let translation = cgmath::Matrix4::from_translation(cgmath::Vector3::new(0.0, 0.0, 0.0));
         let translation = cgmath::Matrix4::from_translation(cgmath::Vector3::new(
-            self.position.x,
-            -self.position.y,
+            -1.0 + self.position.x * 2.0,
+            1.0 - self.position.y * 2.0,
             0.0,
         ));
         // let translation = cgmath::Matrix4::from_translation(cgmath::vec3(

@@ -30,15 +30,15 @@ fn main() {
     resource_manager.add_texture(&texture_name, texture);
 
     let mut circle1 = Circle::new(
-        Vector2::new(0.0, 0.0),
-        0.5,
+        Vector2::new(0.5, 0.5),
+        0.1,
         image::Rgba([1.0, 0.0, 0.0, 1.0]),
     );
 
     let mut collider1 = CircleCollider::new(circle1.radius, circle1.position);
 
     let mut circle2 = Circle::new(
-        Vector2::new(0.3, 0.3),
+        Vector2::new(0.5, 0.5),
         0.1,
         image::Rgba([0.0, 0.0, 1.0, 1.0]),
     );
@@ -97,8 +97,16 @@ fn main() {
         let collission = collider1.is_colliding_with_circle(&collider2);
         let collission2 = collider2.is_colliding_with_circle(&collider1);
         println!(
-            "{} {}, distance: {}, radius1: {}, radius2: {}",
-            collission, collission2, distance, circle1.radius, circle2.radius
+            "{} {}, positions: ({}, {}) ({}, {}). distance: {}, radius1: {}, radius2: {}",
+            collission,
+            collission2,
+            circle1.position.x,
+            circle1.position.y,
+            circle2.position.x,
+            circle2.position.y,
+            distance,
+            circle1.radius,
+            circle2.radius
         );
 
         frame.finish().unwrap();
