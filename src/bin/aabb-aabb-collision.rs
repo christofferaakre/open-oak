@@ -14,6 +14,8 @@ use std::collections::HashSet;
 
 use std::time::Instant;
 
+use std::f32::consts::PI;
+
 fn main() {
     let Game {
         display,
@@ -30,15 +32,17 @@ fn main() {
 
     let mut rect1 = Rectangle::new(
         Vector2::new(0.5, 0.5),
-        Vector2::new(0.1, 0.1),
+        Vector2::new(0.2, 0.1),
+        cgmath::Rad(0.5 * PI),
         image::Rgba([1.0, 0.0, 0.0, 1.0]),
     );
 
     let mut collider1 = RectangleCollider::new(rect1.position, rect1.size);
 
     let mut rect2 = Rectangle::new(
-        Vector2::new(0.5, 0.5),
+        Vector2::new(0.7, 0.7),
         Vector2::new(0.1, 0.1),
+        cgmath::Rad(0.0),
         image::Rgba([0.0, 0.0, 1.0, 1.0]),
     );
 

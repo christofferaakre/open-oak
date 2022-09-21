@@ -13,12 +13,15 @@ use glium::Surface;
 
 use crate::impl_texture;
 
+use cgmath::Rad;
+
 /// Struct representing a Rectangle. Implements the `Renderable`
 /// trait, so it can be rendered to the screen
 #[derive(Clone, Debug)]
 pub struct Rectangle {
     pub position: Vector2<f32>,
     pub size: Vector2<f32>,
+    pub rotation: Rad<f32>,
     pub id: uuid::Uuid,
     pub texture_name: String,
     pub color: image::Rgba<f32>,
@@ -33,13 +36,19 @@ impl_texture!(
 
 impl Rectangle {
     /// Returns a new Rectangle with no texture.
-    pub fn new(position: Vector2<f32>, size: Vector2<f32>, color: image::Rgba<f32>) -> Self {
+    pub fn new(
+        position: Vector2<f32>,
+        size: Vector2<f32>,
+        rotation: Rad<f32>,
+        color: image::Rgba<f32>,
+    ) -> Self {
         let block = Rectangle {
             position,
             size,
             id: Uuid::new_v4(),
             texture_name: Default::default(),
             color,
+            rotation,
         };
 
         return block;
@@ -65,7 +74,10 @@ impl Renderable for Rectangle {
         //     0.0,
         // ));
 
-        let model = translation * scale;
+        // rotation
+        let rotation = cgmath::Matrix4::from_angle_z(self.rotation);
+
+        let model = rotation * translation * scale;
         let model: [[f32; 4]; 4] = model.into();
 
         let texture = resource_manager
