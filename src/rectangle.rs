@@ -53,6 +53,17 @@ impl Rectangle {
 
         return block;
     }
+
+    pub fn edges(&self) -> Edges {
+        let pos = self.position;
+        let size = self.size;
+        Edges {
+            left: pos.x - size.x / 2.0,
+            right: pos.x + size.x / 2.0,
+            bottom: pos.y + size.y / 2.0,
+            top: pos.y - size.y / 2.0,
+        }
+    }
 }
 
 impl Renderable for Rectangle {
