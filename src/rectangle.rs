@@ -77,7 +77,7 @@ impl Renderable for Rectangle {
         // rotation
         let rotation = cgmath::Matrix4::from_angle_z(self.rotation);
 
-        let model = rotation * translation * scale;
+        let model = translation * rotation * scale;
         let model: [[f32; 4]; 4] = model.into();
 
         let texture = resource_manager
