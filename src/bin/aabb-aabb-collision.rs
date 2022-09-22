@@ -33,11 +33,11 @@ fn main() {
     let mut rect1 = Rectangle::new(
         Vector2::new(0.5, 0.5),
         Vector2::new(0.2, 0.1),
-        cgmath::Rad(0.5 * PI),
+        cgmath::Rad(0.0 * PI),
         image::Rgba([1.0, 0.0, 0.0, 1.0]),
     );
 
-    let mut collider1 = RectangleCollider::new(rect1.position, rect1.size);
+    let mut collider1 = RectangleCollider::new(rect1.position, rect1.size, rect1.rotation);
 
     let mut rect2 = Rectangle::new(
         Vector2::new(0.7, 0.7),
@@ -46,7 +46,7 @@ fn main() {
         image::Rgba([0.0, 0.0, 1.0, 1.0]),
     );
 
-    let mut collider2 = RectangleCollider::new(rect2.position, rect2.size);
+    let mut collider2 = RectangleCollider::new(rect2.position, rect2.size, rect1.rotation);
 
     rect1.set_texture(texture_name.clone());
     rect2.set_texture(texture_name.clone());
@@ -88,6 +88,8 @@ fn main() {
 
         rect1.draw(&mut frame, &resource_manager).unwrap();
         rect2.draw(&mut frame, &resource_manager).unwrap();
+
+        rect1.rotation += cgmath::Rad(0.001);
 
         let collission = collider1.is_colliding_with_rect(&collider2);
         let collission2 = collider2.is_colliding_with_rect(&collider1);

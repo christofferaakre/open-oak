@@ -57,11 +57,30 @@ impl Rectangle {
     pub fn edges(&self) -> Edges {
         let pos = self.position;
         let size = self.size;
+        let rotation = cgmath::Matrix2::from_angle(-self.rotation);
         Edges {
-            left: pos.x - size.x / 2.0,
-            right: pos.x + size.x / 2.0,
-            bottom: pos.y + size.y / 2.0,
-            top: pos.y - size.y / 2.0,
+            top_left: pos + rotation * Vector2::new(-size.x / 2.0, -size.y / 2.0),
+            top_right: pos + rotation * Vector2::new(size.x / 2.0, -size.y / 2.0),
+            bottom_left: pos + rotation * Vector2::new(-size.x / 2.0, size.y / 2.0),
+            bottom_right: pos + rotation * Vector2::new(size.x / 2.0, size.y / 2.0),
+        }
+    }
+
+    pub fn draw_edges(&self, frame: &mut glium::Frame, resource_manager: &ResourceManager) {
+        let edges = self.edges();
+
+        for edge in edges.iter() {
+            let mut rect = Rectangle::new(
+                edge,
+                Vector2::new(0.03, 0.03),
+                Rad(0.0),
+                image::Rgba([0.0, 1.0, 0.0, 1.0]),
+            );
+
+            rect.set_texture(String::from("block"));
+
+            rect.draw(frame, resource_manager)
+                .expect("Failed to draw edge");
         }
     }
 }
@@ -132,29 +151,46 @@ impl Renderable for Rectangle {
 pub struct RectangleCollider {
     pub position: Vector2<f32>,
     pub size: Vector2<f32>,
+    pub rotation: Rad<f32>,
 }
 
 #[derive(Debug)]
 pub struct Edges {
-    left: f32,
-    right: f32,
-    bottom: f32,
-    top: f32,
+    top_left: Vector2<f32>,
+    top_right: Vector2<f32>,
+    bottom_left: Vector2<f32>,
+    bottom_right: Vector2<f32>,
+}
+
+impl Edges {
+    pub fn iter(&self) -> [Vector2<f32>; 4] {
+        [
+            self.top_left,
+            self.top_right,
+            self.bottom_left,
+            self.bottom_right,
+        ]
+    }
 }
 
 impl RectangleCollider {
-    pub fn new(position: Vector2<f32>, size: Vector2<f32>) -> Self {
-        RectangleCollider { position, size }
+    pub fn new(position: Vector2<f32>, size: Vector2<f32>, rotation: Rad<f32>) -> Self {
+        RectangleCollider {
+            position,
+            size,
+            rotation,
+        }
     }
 
     pub fn edges(&self) -> Edges {
         let pos = self.position;
         let size = self.size;
+        let rotation = cgmath::Matrix2::from_angle(self.rotation);
         Edges {
-            left: pos.x - size.x / 2.0,
-            right: pos.x + size.x / 2.0,
-            bottom: pos.y + size.y / 2.0,
-            top: pos.y - size.y / 2.0,
+            top_left: pos + rotation * Vector2::new(-size.x / 2.0, -size.y / 2.0),
+            top_right: pos + rotation * Vector2::new(size.x / 2.0, -size.y / 2.0),
+            bottom_left: pos + rotation * Vector2::new(-size.x / 2.0, size.y / 2.0),
+            bottom_right: pos + rotation * Vector2::new(size.x / 2.0, size.y / 2.0),
         }
     }
 
@@ -162,12 +198,13 @@ impl RectangleCollider {
         // check horizontal overlap
         let edges = self.edges();
         let other_edges = other.edges();
-        let x_overlap = (edges.left <= other_edges.right && edges.right >= other_edges.right)
-            || (edges.right >= other_edges.left && edges.left <= other_edges.left);
-        let y_overlap = (edges.bottom >= other_edges.top && edges.top <= other_edges.top)
-            || (edges.top <= other_edges.bottom && edges.bottom >= other_edges.bottom);
-
-        return x_overlap && y_overlap;
+        return false;
+        // let x_overlap = (edges.left <= other_edges.right && edges.right >= other_edges.right)
+        //     || (edges.right >= other_edges.left && edges.left <= other_edges.left);
+        // let y_overlap = (edges.bottom >= other_edges.top && edges.top <= other_edges.top)
+        //     || (edges.top <= other_edges.bottom && edges.bottom >= other_edges.bottom);
+        //
+        // return x_overlap && y_overlap;
     }
 }
 
