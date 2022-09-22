@@ -57,7 +57,7 @@ impl Rectangle {
         return block;
     }
 
-    pub fn edges(&self) -> Edges {
+    fn edges(&self) -> Edges {
         let pos = self.position;
         let size = self.size;
         let rotation = cgmath::Matrix2::from_angle(-self.rotation);
@@ -197,7 +197,10 @@ impl RectangleCollider {
         }
     }
 
+    /// Uses the Separating Axis Theorem to check if the rectangle collider is colliding with another rectangle collider
     pub fn is_colliding_with_rect(&self, other: &RectangleCollider) -> bool {
+        // https://www.gamedev.net/tutorials/_/technical/game-programming/2d-rotated-rectangle-collision-r2604/
+
         // Use Separating Axis Theorem
         let edges = self.edges();
         let other_edges = other.edges();
@@ -243,13 +246,6 @@ impl RectangleCollider {
 
         // If every axis had an overlap, then there is a collission
         return true;
-
-        // let x_overlap = (edges.left <= other_edges.right && edges.right >= other_edges.right)
-        //     || (edges.right >= other_edges.left && edges.left <= other_edges.left);
-        // let y_overlap = (edges.bottom >= other_edges.top && edges.top <= other_edges.top)
-        //     || (edges.top <= other_edges.bottom && edges.bottom >= other_edges.bottom);
-        //
-        // return x_overlap && y_overlap;
     }
 }
 
