@@ -83,16 +83,27 @@ fn main() {
         let mut frame = display.draw();
         frame.clear_color(0.2, 0.3, 0.3, 1.0);
 
+        rect1.rotation += cgmath::Rad(0.001);
+
         collider1.position = rect1.position;
+        collider1.rotation = rect1.rotation;
         collider2.position = rect2.position;
+        collider2.rotation = collider2.rotation;
 
         rect1.draw(&mut frame, &resource_manager).unwrap();
         rect2.draw(&mut frame, &resource_manager).unwrap();
 
-        rect1.rotation += cgmath::Rad(0.001);
-
         let collission = collider1.is_colliding_with_rect(&collider2);
         let collission2 = collider2.is_colliding_with_rect(&collider1);
+
+        if collission {
+            rect1.color = image::Rgba([0.0, 1.0, 0.0, 1.0]);
+            rect2.color = image::Rgba([0.0, 1.0, 0.0, 1.0]);
+        } else {
+            rect1.color = image::Rgba([1.0, 0.0, 0.0, 1.0]);
+            rect2.color = image::Rgba([0.0, 0.0, 1.0, 1.0]);
+        }
+
         println!(
             "{} {}. Edges: {:?}, {:?}",
             collission,

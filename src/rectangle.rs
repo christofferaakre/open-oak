@@ -13,7 +13,10 @@ use glium::Surface;
 
 use crate::impl_texture;
 
+use cgmath::InnerSpace;
 use cgmath::Rad;
+
+use std::cmp::Ordering;
 
 /// Struct representing a Rectangle. Implements the `Renderable`
 /// trait, so it can be rendered to the screen
@@ -71,7 +74,7 @@ impl Rectangle {
 
         for edge in edges.iter() {
             let mut rect = Rectangle::new(
-                edge,
+                edge.clone(),
                 Vector2::new(0.03, 0.03),
                 Rad(0.0),
                 image::Rgba([0.0, 1.0, 0.0, 1.0]),
@@ -185,7 +188,7 @@ impl RectangleCollider {
     pub fn edges(&self) -> Edges {
         let pos = self.position;
         let size = self.size;
-        let rotation = cgmath::Matrix2::from_angle(self.rotation);
+        let rotation = cgmath::Matrix2::from_angle(-self.rotation);
         Edges {
             top_left: pos + rotation * Vector2::new(-size.x / 2.0, -size.y / 2.0),
             top_right: pos + rotation * Vector2::new(size.x / 2.0, -size.y / 2.0),
@@ -195,10 +198,52 @@ impl RectangleCollider {
     }
 
     pub fn is_colliding_with_rect(&self, other: &RectangleCollider) -> bool {
-        // check horizontal overlap
+        // Use Separating Axis Theorem
         let edges = self.edges();
         let other_edges = other.edges();
-        return false;
+
+        // Calculate the 4 axes perpendicular to the edges, 2 for each rectangle
+        let axis1 = edges.top_right - edges.top_left;
+        let axis2 = edges.top_right - edges.bottom_right;
+        let axis3 = other_edges.top_right - other_edges.top_left;
+        let axis4 = other_edges.top_right - other_edges.bottom_right;
+        let axes = [axis1, axis2, axis3, axis4];
+
+        // project edges onto axes
+        for axis in axes {
+            let projected_edges = edges
+                .iter()
+                .map(|edge| edge.dot(axis) / (axis.dot(axis)) * axis);
+            let projected_other_edges = other_edges
+                .iter()
+                .map(|edge| edge.dot(axis) / (axis.dot(axis)) * axis);
+
+            let dot_products = edges.iter().map(|edge| edge.dot(axis));
+            let min = dot_products
+                .iter()
+                .min_by(|a, b| a.partial_cmp(b).unwrap_or(Ordering::Equal));
+            let max = dot_products
+                .iter()
+                .max_by(|a, b| a.partial_cmp(b).unwrap_or(Ordering::Equal));
+
+            let other_dot_products = other_edges.iter().map(|edge| edge.dot(axis));
+            let other_min = other_dot_products
+                .iter()
+                .min_by(|a, b| a.partial_cmp(b).unwrap_or(Ordering::Equal));
+            let other_max = other_dot_products
+                .iter()
+                .max_by(|a, b| a.partial_cmp(b).unwrap_or(Ordering::Equal));
+
+            // check for overlap. If even one axis have no overlap,
+            // then there is no collission
+            if !(other_min <= max && other_max >= min) {
+                return false;
+            }
+        }
+
+        // If every axis had an overlap, then there is a collission
+        return true;
+
         // let x_overlap = (edges.left <= other_edges.right && edges.right >= other_edges.right)
         //     || (edges.right >= other_edges.left && edges.left <= other_edges.left);
         // let y_overlap = (edges.bottom >= other_edges.top && edges.top <= other_edges.top)
