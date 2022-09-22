@@ -101,13 +101,7 @@ impl Renderable for Rectangle {
             1.0 - self.position.y * 2.0,
             0.0,
         ));
-        // let translation = cgmath::Matrix4::from_translation(cgmath::vec3(
-        //     2.0 * (self.size.x / 2.0 - 0.5 + self.position.x),
-        //     2.0 * (0.5 - self.size.y / 2.0 - self.position.y),
-        //     0.0,
-        // ));
 
-        // rotation
         let rotation = cgmath::Matrix4::from_angle_z(self.rotation);
 
         let model = translation * rotation * scale;
