@@ -27,6 +27,6 @@ fn main() {
 
     vertices_source.push_str("];");
 
-    let mut file = std::fs::File::create("src/circle_vertices.rs").unwrap();
+    let mut file = std::fs::File::create("src/shapes/circle/circle_vertices.rs").unwrap();
     file.write_all(vertices_source.as_bytes()).unwrap();
 }

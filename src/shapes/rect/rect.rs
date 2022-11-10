@@ -1,5 +1,3 @@
-//! Module defining a rectangle.
-
 use cgmath::Vector2;
 use uuid::Uuid;
 

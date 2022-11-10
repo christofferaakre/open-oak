@@ -1,3 +1,6 @@
+//! Containst the Collide trait, which is used for collission
+//! detection between objects. All collider types implement the Collide trait.
+
 use super::circle::CircleCollider;
 use super::rect::RectangleCollider;
 use cgmath::InnerSpace;

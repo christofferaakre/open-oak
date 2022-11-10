@@ -1,5 +1,3 @@
-//! Module defining a circle.
-
 use cgmath::Vector2;
 use uuid::Uuid;
 
