@@ -1,9 +1,9 @@
 use glium::Surface;
 
-use open_oak::circle::{Circle, CircleCollider};
 use open_oak::events::handle_events;
 use open_oak::init::{init, Game};
 use open_oak::resource_manager::ResourceManager;
+use open_oak::shapes::circle::{Circle, CircleCollider};
 use open_oak::traits::{Renderable, Shaders, Texture};
 
 use glium::glutin::event::VirtualKeyCode;
@@ -14,6 +14,8 @@ use cgmath::Vector2;
 use std::collections::HashSet;
 
 use std::time::Instant;
+
+use open_oak::shapes::collission::Collide;
 
 fn main() {
     let Game {
@@ -94,8 +96,8 @@ fn main() {
         //     center.draw(&mut frame, &resource_manager).unwrap();
         // }
 
-        let collission = collider1.is_colliding_with_circle(&collider2);
-        let collission2 = collider2.is_colliding_with_circle(&collider1);
+        let collission = collider1.is_colliding_with(&collider2);
+        let collission2 = collider2.is_colliding_with(&collider1);
         println!(
             "{} {}, positions: ({}, {}) ({}, {}). distance: {}, radius1: {}, radius2: {}",
             collission,

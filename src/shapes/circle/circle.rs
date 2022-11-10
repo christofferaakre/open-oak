@@ -121,29 +121,8 @@ pub struct CircleCollider {
     pub center: Vector2<f32>,
 }
 
-impl Collide for CircleCollider {
-    fn is_colliding_with(&self, other: &Self) -> bool {
-        println!("circle-circle");
-        false
-    }
-}
-
-impl Collide<RectangleCollider> for CircleCollider {
-    fn is_colliding_with(&self, other: &RectangleCollider) -> bool {
-        println!("circle-rect");
-        false
-    }
-}
-
 impl CircleCollider {
     pub fn new(radius: f32, center: Vector2<f32>) -> Self {
         CircleCollider { radius, center }
-    }
-
-    pub fn is_colliding_with_circle(&self, other: &CircleCollider) -> bool {
-        let displacment = other.center - self.center;
-        let distance = displacment.magnitude();
-
-        return distance < self.radius + other.radius;
     }
 }

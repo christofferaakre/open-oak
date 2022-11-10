@@ -2,8 +2,8 @@ use glium::Surface;
 
 use open_oak::events::handle_events;
 use open_oak::init::{init, Game};
-use open_oak::rectangle::{Rectangle, RectangleCollider};
 use open_oak::resource_manager::ResourceManager;
+use open_oak::shapes::rect::{Rectangle, RectangleCollider};
 use open_oak::traits::{Renderable, Shaders, Texture};
 
 use glium::glutin::event::VirtualKeyCode;
@@ -15,6 +15,8 @@ use std::collections::HashSet;
 use std::time::Instant;
 
 use std::f32::consts::PI;
+
+use open_oak::shapes::collission::Collide;
 
 fn main() {
     let Game {
@@ -93,8 +95,8 @@ fn main() {
         rect1.draw(&mut frame, &resource_manager).unwrap();
         rect2.draw(&mut frame, &resource_manager).unwrap();
 
-        let collission = collider1.is_colliding_with_rect(&collider2);
-        let collission2 = collider2.is_colliding_with_rect(&collider1);
+        let collission = collider1.is_colliding_with(&collider2);
+        let collission2 = collider2.is_colliding_with(&collider1);
 
         if collission {
             rect1.color = image::Rgba([0.0, 1.0, 0.0, 1.0]);
