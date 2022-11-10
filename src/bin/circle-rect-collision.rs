@@ -35,7 +35,7 @@ fn main() {
 
     let mut circle = Circle::new(
         Vector2::new(0.5, 0.5),
-        0.1,
+        0.15,
         image::Rgba([1.0, 0.0, 0.0, 1.0]),
     );
 
@@ -92,12 +92,14 @@ fn main() {
         rect.draw(&mut frame, &resource_manager).unwrap();
 
         let collision = rect_collider.is_colliding_with(&circle_collider);
-
-        // for circle in [&circle1, &circle2] {
-        //     let mut center = Circle::new(circle.position, 0.1, image::Rgba([0.0, 1.0, 0.0, 1.0]));
-        //     center.set_texture(texture_name.clone());
-        //     center.draw(&mut frame, &resource_manager).unwrap();
-        // }
+        if collision {
+            rect.color = image::Rgba([0.0, 1.0, 0.0, 1.0]);
+            circle.color = image::Rgba([0.0, 1.0, 0.0, 1.0]);
+            println!("Collission");
+        } else {
+            rect.color = image::Rgba([1.0, 0.0, 0.0, 1.0]);
+            circle.color = image::Rgba([0.0, 0.0, 1.0, 1.0]);
+        }
 
         frame.finish().unwrap();
     });

@@ -159,6 +159,13 @@ pub struct Edges {
     pub bottom_right: Vector2<f32>,
 }
 
+pub struct EdgesScalar {
+    pub left: f32,
+    pub right: f32,
+    pub bottom: f32,
+    pub top: f32,
+}
+
 impl Edges {
     pub fn iter(&self) -> [Vector2<f32>; 4] {
         [
@@ -167,6 +174,15 @@ impl Edges {
             self.bottom_left,
             self.bottom_right,
         ]
+    }
+
+    pub fn scalar_edges(&self) -> EdgesScalar {
+        EdgesScalar {
+            left: self.top_left.x,
+            right: self.top_right.x,
+            bottom: self.bottom_left.y,
+            top: self.top_left.y,
+        }
     }
 }
 

@@ -3,7 +3,7 @@
 
 use super::circle::CircleCollider;
 use super::rect::RectangleCollider;
-use cgmath::InnerSpace;
+use cgmath::{InnerSpace, Vector2};
 
 use std::cmp::Ordering;
 
@@ -65,7 +65,23 @@ impl Collide for RectangleCollider {
 
 impl Collide<CircleCollider> for RectangleCollider {
     fn is_colliding_with(&self, other: &CircleCollider) -> bool {
-        todo!()
+        //TODO: Account for rect rotation
+        let displacement = self.position - other.center;
+        // let displacement = self.edges().top_right - other.center;
+        let dx = displacement.x.abs() - self.size.x / 2.0;
+        let dy = displacement.y.abs() - self.size.y / 2.0;
+
+        println!("dx: {dx}, dy: {dy}");
+
+        if dx > other.radius || dy > other.radius {
+            return false;
+        }
+
+        if dx <= 0.0 || dy <= 0.0 {
+            return true;
+        }
+
+        return dx * dx + dy * dy <= other.radius * other.radius;
     }
 }
 
