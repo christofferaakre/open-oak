@@ -6,6 +6,8 @@ use uuid::Uuid;
 use glium::vertex::VertexBuffer;
 
 use crate::resource_manager::ResourceManager;
+use crate::shapes::circle::circle::CircleCollider;
+use crate::shapes::collission::Collide;
 use crate::structs::Vertex;
 use crate::traits::{Name, Renderable, Shaders, Texture, Vertices};
 
@@ -167,6 +169,20 @@ impl Edges {
             self.bottom_left,
             self.bottom_right,
         ]
+    }
+}
+
+impl Collide for RectangleCollider {
+    fn is_colliding_with(&self, other: &Self) -> bool {
+        println!("rect-rect");
+        false
+    }
+}
+
+impl Collide<CircleCollider> for RectangleCollider {
+    fn is_colliding_with(&self, other: &CircleCollider) -> bool {
+        println!("rect-circle");
+        false
     }
 }
 

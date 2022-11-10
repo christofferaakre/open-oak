@@ -1,7 +1,7 @@
 use glium::Surface;
 
-use open_oak::rectangle::RectangleCollider;
 use open_oak::shapes::circle::circle::CircleCollider;
+use open_oak::shapes::rect::rect::RectangleCollider;
 
 use open_oak::shapes::collission::Collide;
 
@@ -17,4 +17,6 @@ fn main() {
 
     rect1.is_colliding_with(&rect2);
     rect1.is_colliding_with(&circle1);
+    circle1.is_colliding_with(&rect1);
+    circle1.is_colliding_with(&circle2);
 }

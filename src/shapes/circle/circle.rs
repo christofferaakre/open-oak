@@ -6,6 +6,8 @@ use uuid::Uuid;
 use glium::vertex::VertexBuffer;
 
 use crate::resource_manager::ResourceManager;
+use crate::shapes::collission::Collide;
+use crate::shapes::rect::rect::RectangleCollider;
 use crate::structs::Vertex;
 use crate::traits::{Name, Renderable, Shaders, Texture, Vertices};
 
@@ -117,6 +119,20 @@ impl Renderable for Circle {
 pub struct CircleCollider {
     pub radius: f32,
     pub center: Vector2<f32>,
+}
+
+impl Collide for CircleCollider {
+    fn is_colliding_with(&self, other: &Self) -> bool {
+        println!("circle-circle");
+        false
+    }
+}
+
+impl Collide<RectangleCollider> for CircleCollider {
+    fn is_colliding_with(&self, other: &RectangleCollider) -> bool {
+        println!("circle-rect");
+        false
+    }
 }
 
 impl CircleCollider {

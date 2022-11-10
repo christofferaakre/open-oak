@@ -16,6 +16,8 @@ use std::collections::HashSet;
 
 use std::time::Instant;
 
+use open_oak::shapes::collission::Collide;
+
 fn main() {
     let Game {
         display,

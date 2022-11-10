@@ -82,11 +82,8 @@ extern crate doc_comment;
 pub mod events;
 
 // pub mod block;
-pub mod circle;
-pub mod circle_vertices;
 pub mod init;
 pub mod macros;
-pub mod rectangle;
 pub mod resource_manager;
 pub mod shapes;
 pub mod structs;
