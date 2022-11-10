@@ -88,5 +88,6 @@ pub mod init;
 pub mod macros;
 pub mod rectangle;
 pub mod resource_manager;
+pub mod shapes;
 pub mod structs;
 pub mod traits;

@@ -18,9 +18,6 @@ use cgmath::Rad;
 
 use std::cmp::Ordering;
 
-use super::shapes::circle::circle::CircleCollider;
-use super::shapes::collission::Collide;
-
 /// Struct representing a Rectangle. Implements the `Renderable`
 /// trait, so it can be rendered to the screen
 #[derive(Clone, Debug)]
@@ -36,23 +33,9 @@ pub struct Rectangle {
 impl_texture!(
     Rectangle,
     "rectangle",
-    "../shaders/rectangle.vs",
-    "../shaders/rectangle.fs"
+    "../../../shaders/rectangle.vs",
+    "../../../shaders/rectangle.fs"
 );
-
-impl Collide for RectangleCollider {
-    fn is_colliding_with(&self, other: &Self) -> bool {
-        println!("rect-rect");
-        false
-    }
-}
-
-impl Collide<CircleCollider> for RectangleCollider {
-    fn is_colliding_with(&self, other: &CircleCollider) -> bool {
-        println!("rect-circle");
-        false
-    }
-}
 
 impl Rectangle {
     /// Returns a new Rectangle with no texture.
