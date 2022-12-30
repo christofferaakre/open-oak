@@ -37,6 +37,7 @@ fn main() {
         Vector2::new(0.2, 0.1),
         cgmath::Rad(0.0 * PI),
         image::Rgba([1.0, 0.0, 0.0, 1.0]),
+        texture_name.clone(),
     );
 
     let mut collider1 = RectangleCollider::new(rect1.position, rect1.size, rect1.rotation);
@@ -46,12 +47,10 @@ fn main() {
         Vector2::new(0.1, 0.1),
         cgmath::Rad(0.0),
         image::Rgba([0.0, 0.0, 1.0, 1.0]),
+        texture_name.clone(),
     );
 
     let mut collider2 = RectangleCollider::new(rect2.position, rect2.size, rect1.rotation);
-
-    rect1.set_texture(texture_name.clone());
-    rect2.set_texture(texture_name.clone());
 
     let mut pressed_keys = HashSet::new();
 

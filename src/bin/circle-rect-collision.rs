@@ -46,12 +46,12 @@ fn main() {
         Vector2::new(0.1, 0.1),
         cgmath::Rad(0.0),
         image::Rgba([0.0, 0.0, 1.0, 1.0]),
+        texture_name.clone(),
     );
 
     let mut rect_collider = RectangleCollider::new(rect.position, rect.size, rect.rotation);
 
     circle.set_texture(texture_name.clone());
-    rect.set_texture(texture_name.clone());
 
     let mut pressed_keys = HashSet::new();
 

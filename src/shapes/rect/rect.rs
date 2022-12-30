@@ -44,12 +44,13 @@ impl Rectangle {
         size: Vector2<f32>,
         rotation: Rad<f32>,
         color: image::Rgba<f32>,
+        texture: String,
     ) -> Self {
         let block = Rectangle {
             position,
             size,
             id: Uuid::new_v4(),
-            texture_name: Default::default(),
+            texture_name: texture,
             color,
             rotation,
         };
@@ -73,14 +74,13 @@ impl Rectangle {
         let edges = self.edges();
 
         for edge in edges.iter() {
-            let mut rect = Rectangle::new(
+            let rect = Rectangle::new(
                 edge.clone(),
                 Vector2::new(0.03, 0.03),
                 Rad(0.0),
                 image::Rgba([0.0, 1.0, 0.0, 1.0]),
+                String::from("block"),
             );
-
-            rect.set_texture(String::from("block"));
 
             rect.draw(frame, resource_manager)
                 .expect("Failed to draw edge");
