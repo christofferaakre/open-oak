@@ -87,3 +87,9 @@ pub mod resource_manager;
 pub mod shapes;
 pub mod structs;
 pub mod traits;
+
+pub use cgmath::{Rad, Vector2, Vector3, VectorSpace};
+pub use glium::glutin;
+pub use glium::Surface;
+pub use image::Rgba;
+pub use std::time::Instant;
