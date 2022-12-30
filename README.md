@@ -96,3 +96,6 @@ In the `Cargo.toml` of your binary crate, you can link to your local version of 
 ```
 When you are done making changes, submit a pull request!
 
+## TODOs
+- Implement collission detecting for circle and rotated rectangle
+
