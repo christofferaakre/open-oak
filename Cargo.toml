@@ -16,11 +16,4 @@ cgmath = "0.18.0"
 doc-comment = "0.3.3"
 glium = "0.32.1"
 image = "0.24.5"
-
-[dependencies.uuid]
-version = "*"
-features = [
-    "v4",
-    "fast-rng",
-    "macro-diagnostics"
-]
+uuid = { version = "1.2.2", features = ["v4", "fast-rng", "macro-diagnostics"] }
