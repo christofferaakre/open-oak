@@ -1,27 +1,13 @@
 //! Module for handling events such as window resizing,
 //! keyboard input, etc.
 
-use cgmath::Vector2;
-use glium::glutin::{
-    event::{self, ElementState, KeyboardInput, VirtualKeyCode},
-    event_loop,
-};
+use glium::glutin::event::{self, ElementState, VirtualKeyCode};
 use std::collections::HashSet;
 
 /// Handles events from the glium event loop:
 /// * Responds to window events such as resizing by reiszing the window.
 /// * Returns the keyboard event if there was one
 /// * Updates the HashSet storing the pressed keys
-/// # Examples
-/// ```rust
-///        // HashSet to store pressed keys in
-///        let mut pressed_keys: HashSet<VirtualKeyCode> = HashSet::new();
-///
-///        event_loop.run(move |ev, _, control_flow| {
-///            let keyboard_input = handle_events(ev, control_flow, &mut pressed_keys);
-///            /* --snip-- /*
-///    });
-/// ```
 pub fn handle_events<T>(
     ev: event::Event<T>,
     pressed_keys: &mut HashSet<VirtualKeyCode>,

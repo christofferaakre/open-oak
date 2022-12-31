@@ -1,10 +1,6 @@
 //! Module containing useful macros.
 
 /// Implements the `Name` trait for the given struct.
-/// # Examples
-/// ```rust
-/// impl_name!(MyStruct, "my_name");
-/// ```
 #[macro_export]
 macro_rules! impl_name {
     ($struct:ident, $name:literal) => {
@@ -17,10 +13,6 @@ macro_rules! impl_name {
 }
 
 /// Implements the `Vertices` trait for the given struct.
-/// # Examples
-/// ```rust
-/// impl_vertices!(MyStruct)
-/// ```
 #[macro_export]
 macro_rules! impl_vertices {
     ($struct:ident) => {
@@ -33,10 +25,6 @@ macro_rules! impl_vertices {
 }
 
 /// Implements the `Shaders` trait for the given struct.
-/// # Examples
-/// ```rust
-/// impl_shaders!(MyStruct, "path/to/vertex/shader", "path/to/fragment/shader");
-/// ```
 #[macro_export]
 macro_rules! impl_shaders {
     ($struct:ident, $vertex_source:literal, $fragment_source:literal) => {
@@ -63,10 +51,6 @@ macro_rules! impl_shaders {
 
 /// Implements the `Texture` trait for the given struct. Requires the trait bounds
 /// to be satisfied already.
-/// # Examples
-/// ```rust
-/// impl_texture_trait!(MyStruct);
-/// ```
 #[macro_export]
 macro_rules! impl_texture_trait {
     ($struct:ident) => {
@@ -79,16 +63,6 @@ macro_rules! impl_texture_trait {
 }
 
 /// Implements the `Texture` trait and all of its trait bounds.
-/// # Examples
-/// ```rust
-///
-///impl_texture!(
-///    MyStruct,
-///    "my_name",
-///    "path/to/vertex/shader",
-///    "path/to/fragment/shader"
-///);
-/// ```
 #[macro_export]
 macro_rules! impl_texture {
     ($struct:ident, $name:literal, $vertex_source:literal, $fragment_source:literal) => {
