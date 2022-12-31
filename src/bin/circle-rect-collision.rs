@@ -37,6 +37,7 @@ fn main() {
         Vector2::new(0.5, 0.5),
         0.15,
         image::Rgba([1.0, 0.0, 0.0, 1.0]),
+        texture_name.clone(),
     );
 
     let mut circle_collider = CircleCollider::new(circle.radius, circle.position);
@@ -51,14 +52,12 @@ fn main() {
 
     let mut rect_collider = RectangleCollider::new(rect.position, rect.size, rect.rotation);
 
-    circle.set_texture(texture_name.clone());
-
     let mut pressed_keys = HashSet::new();
 
     let v = 0.1;
 
     let mut last_frame = Instant::now();
-    event_loop.run(move |ev, _, control_flow| {
+    event_loop.run(move |ev, _, _control_flow| {
         let dt = last_frame.elapsed();
         last_frame += dt;
 

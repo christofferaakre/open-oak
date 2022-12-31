@@ -4,8 +4,6 @@ use uuid::Uuid;
 use glium::vertex::VertexBuffer;
 
 use crate::resource_manager::ResourceManager;
-use crate::shapes::circle::circle::CircleCollider;
-use crate::shapes::collission::Collide;
 use crate::structs::Vertex;
 use crate::traits::{Name, Renderable, Shaders, Texture, Vertices};
 
@@ -13,21 +11,20 @@ use glium::Surface;
 
 use crate::impl_texture;
 
-use cgmath::InnerSpace;
 use cgmath::Rad;
-
-use std::cmp::Ordering;
 
 /// Struct representing a Rectangle. Implements the `Renderable`
 /// trait, so it can be rendered to the screen
 #[derive(Clone, Debug)]
 pub struct Rectangle {
+    /// The position of the centre of the rectangle. Origin is top left corner
     pub position: Vector2<f32>,
+    /// The side lengths of the rectangle
     pub size: Vector2<f32>,
     pub rotation: Rad<f32>,
     pub id: uuid::Uuid,
     pub texture_name: String,
-    pub color: image::Rgba<f32>,
+    pub color: crate::Rgba<f32>,
 }
 
 impl_texture!(
@@ -38,12 +35,15 @@ impl_texture!(
 );
 
 impl Rectangle {
-    /// Returns a new Rectangle with no texture.
+    /// Returns a new Rectangle with a texture.
+    /// # Panics
+    /// You must not forget to register a texture with the same name in
+    /// your resource manager, or trying to draw this rect will panic!
     pub fn new(
         position: Vector2<f32>,
         size: Vector2<f32>,
         rotation: Rad<f32>,
-        color: image::Rgba<f32>,
+        color: crate::Rgba<f32>,
         texture: String,
     ) -> Self {
         let block = Rectangle {
@@ -58,7 +58,7 @@ impl Rectangle {
         return block;
     }
 
-    fn edges(&self) -> Edges {
+    pub fn edges(&self) -> Edges {
         let pos = self.position;
         let size = self.size;
         let rotation = cgmath::Matrix2::from_angle(-self.rotation);
@@ -70,6 +70,7 @@ impl Rectangle {
         }
     }
 
+    /// Draws a small rectangle at each of the edges of the rectangle. Useful for debugging
     pub fn draw_edges(&self, frame: &mut glium::Frame, resource_manager: &ResourceManager) {
         let edges = self.edges();
 
@@ -159,6 +160,8 @@ pub struct Edges {
     pub bottom_right: Vector2<f32>,
 }
 
+/// The scalar values of the x or y coordinate (whichever is applicable) of each of the four edges
+/// of the rectangle
 pub struct EdgesScalar {
     pub left: f32,
     pub right: f32,
@@ -167,6 +170,8 @@ pub struct EdgesScalar {
 }
 
 impl Edges {
+    /// Returns an iterator to iterate through the edges in the order
+    /// top left, top right, bottom left, then bottom right.
     pub fn iter(&self) -> [Vector2<f32>; 4] {
         [
             self.top_left,
@@ -208,6 +213,7 @@ impl RectangleCollider {
     }
 }
 
+/// Vertices used for drawing rectangles.
 pub const VERTICES: [Vertex; 4] = [
     Vertex {
         position: [-0.5, -0.5],

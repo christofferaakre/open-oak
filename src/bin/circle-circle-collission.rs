@@ -4,7 +4,7 @@ use open_oak::events::handle_events;
 use open_oak::init::{init, Game};
 use open_oak::resource_manager::ResourceManager;
 use open_oak::shapes::circle::{Circle, CircleCollider};
-use open_oak::traits::{Renderable, Shaders, Texture};
+use open_oak::traits::{Renderable, Shaders};
 
 use glium::glutin::event::VirtualKeyCode;
 
@@ -35,27 +35,26 @@ fn main() {
         Vector2::new(0.5, 0.5),
         0.1,
         image::Rgba([1.0, 0.0, 0.0, 1.0]),
+        texture_name.clone(),
     );
 
     let mut collider1 = CircleCollider::new(circle1.radius, circle1.position);
 
-    let mut circle2 = Circle::new(
+    let circle2 = Circle::new(
         Vector2::new(0.5, 0.5),
         0.1,
         image::Rgba([0.0, 0.0, 1.0, 1.0]),
+        texture_name.clone(),
     );
 
     let mut collider2 = CircleCollider::new(circle2.radius, circle2.position);
-
-    circle1.set_texture(texture_name.clone());
-    circle2.set_texture(texture_name.clone());
 
     let mut pressed_keys = HashSet::new();
 
     let v = 0.1;
 
     let mut last_frame = Instant::now();
-    event_loop.run(move |ev, _, control_flow| {
+    event_loop.run(move |ev, _, _control_flow| {
         let dt = last_frame.elapsed();
         last_frame += dt;
 

@@ -1,13 +1,15 @@
-//! Containst the Collide trait, which is used for collission
+//! Contains the Collide trait, which is used for collission
 //! detection between objects. All collider types implement the Collide trait.
 
 use super::circle::CircleCollider;
 use super::rect::RectangleCollider;
-use cgmath::{InnerSpace, Vector2};
+use cgmath::InnerSpace;
 
 use std::cmp::Ordering;
 
+/// Types implementing this trait can collide with other objects
 pub trait Collide<Other = Self> {
+    /// Checks if the object is colliding with the other object
     fn is_colliding_with(&self, other: &Other) -> bool;
 }
 
@@ -27,6 +29,7 @@ impl Collide for RectangleCollider {
         let axes = [axis1, axis2, axis3, axis4];
 
         // project edges onto axes
+        // TODO: Check this code. There might be a bug here
         for axis in axes {
             let projected_edges = edges
                 .iter()
