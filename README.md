@@ -98,4 +98,6 @@ When you are done making changes, submit a pull request!
 
 ## TODOs
 - Implement collission detecting for circle and rotated rectangle
+- Clean up the trait code, probably get rid of the macros in `macros.rs` as it's
+a code smell and replace it with less OOP-like code
 
