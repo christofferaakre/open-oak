@@ -4,6 +4,7 @@
 use glium::texture::SrgbTexture2d;
 use glium::vertex::VertexBuffer;
 use glium::Program;
+use image::{ImageBuffer, Rgba};
 use std::collections::HashMap;
 
 use crate::structs::Vertex;
@@ -34,6 +35,26 @@ impl ResourceManager {
     /// * If the image path cannot be opened
     /// * If the image cannot be decoded
     /// * If the texture cannot be created
+    pub fn load_texture_from_image(
+        display: &glium::Display,
+        image: ImageBuffer<Rgba<u8>, Vec<u8>>,
+    ) -> SrgbTexture2d {
+        let image_dimensions = image.dimensions();
+
+        let image =
+            glium::texture::RawImage2d::from_raw_rgba_reversed(&image.into_raw(), image_dimensions);
+
+        let texture = glium::texture::SrgbTexture2d::new(display, image)
+            .unwrap_or_else(|_| panic!("Failed to create texture from image"));
+        return texture;
+    }
+    pub fn load_texture_from_bytes(
+        display: &glium::Display,
+        bytes: &[u8],
+    ) -> glium::texture::SrgbTexture2d {
+        let image = image::load_from_memory(bytes).unwrap().to_rgba8();
+        Self::load_texture_from_image(display, image)
+    }
     pub fn load_texture(
         display: &glium::Display,
         image_path: &str,
@@ -44,14 +65,7 @@ impl ResourceManager {
             .unwrap_or_else(|_| panic!("Failed to decode image {}", image_path))
             .to_rgba8();
 
-        let image_dimensions = image.dimensions();
-
-        let image =
-            glium::texture::RawImage2d::from_raw_rgba_reversed(&image.into_raw(), image_dimensions);
-
-        let texture = glium::texture::SrgbTexture2d::new(display, image)
-            .unwrap_or_else(|_| panic!("Failed to create texture from image {}", image_path));
-        return texture;
+        Self::load_texture_from_image(display, image)
     }
 
     /// Get a stored shader program from the resource manager.
