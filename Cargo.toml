@@ -12,10 +12,10 @@ categories = ["rendering", "rendering::engine", "game-engines", "graphics", "mul
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-glium = "*"
-image = "*"
-cgmath = "*"
-doc-comment = "*"
+cgmath = "0.18.0"
+doc-comment = "0.3.3"
+glium = "0.32.1"
+image = "0.24.5"
 
 [dependencies.uuid]
 version = "*"
